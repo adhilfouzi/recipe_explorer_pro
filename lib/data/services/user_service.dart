@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../handle/firebase_exceptionhandler.dart';
 import '../models/user_model.dart';
@@ -10,9 +12,11 @@ class UserService {
   Future<void> saveUserRecord(UserModel user, String id) async {
     try {
       // Save the user record to the Firestore collection "Users" with the document ID as the user ID
+      log("User Name: ${user.name}");
       await _db.collection("Users").doc(id).set(user.toJson());
     } catch (e) {
-      // Handle any exceptions that occur
+      // Handle any exceptions that occurl
+      log("Error in saveUserRecord : $e");
       throw ExceptionHandler.handleException(e);
     }
   }

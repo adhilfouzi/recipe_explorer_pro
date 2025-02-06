@@ -7,6 +7,7 @@ import '../../utils/validators/validator.dart';
 import '../../utils/widget/button.dart';
 import '../../utils/widget/textfield.dart';
 import 'intro_appbar.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -22,60 +23,61 @@ class LoginScreen extends StatelessWidget {
           actions: [],
           titleText: 'Log in',
         ),
-        body: Form(
-          key: authProvider.loginFormKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(
-                  height: height * 0.3,
-                  width: width,
-                  child: Center(child: Text("ImagePath.logo")),
-                ),
-                MyTextField(
-                  textInputAction: TextInputAction.next,
-                  controller: authProvider.emailTextEditingController,
-                  hintText: 'Email',
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) => InputValidators.validateEmail(value),
-                ),
-                PasswordTextField(
-                  textInputAction: TextInputAction.done,
-                  keyboardType: TextInputType.visiblePassword,
-                  controller: authProvider.passwordTextEditingController,
-                ),
-                SizedBox(height: height * 0.06),
-                TextButton(
-                  onPressed: () {
-                    // Get.to(() => EmailVerificationScreen());
-                  },
-                  child: const Text("Forget password"),
-                ),
-                Button().mainButton('Log in', context, () {
-                  FocusManager.instance.primaryFocus?.unfocus();
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: height * 0.3,
+                width: width,
+                child: Center(child: Text("ImagePath.logo")),
+              ),
+              MyTextField(
+                textInputAction: TextInputAction.next,
+                controller: authProvider.emailTextEditingController,
+                hintText: 'Email',
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) => InputValidators.validateEmail(value),
+              ),
+              PasswordTextField(
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.visiblePassword,
+                controller: authProvider.passwordTextEditingController,
+              ),
+              SizedBox(height: height * 0.06),
+              TextButton(
+                onPressed: () {
+                  // Get.to(() => EmailVerificationScreen());
+                },
+                child: const Text("Forget password"),
+              ),
+              Button().mainButton('Log in', context, () {
+                FocusManager.instance.primaryFocus?.unfocus();
 
-                  authProvider.signIn(context);
-                }),
-                SizedBox(height: height * 0.025),
-                const Text('or'),
-                SizedBox(height: height * 0.025),
-                Button().googleSignInButton(context, false),
-                SizedBox(height: height * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Don’t have an account? '),
-                    TextButton(
-                      onPressed: () {
-                        // Get.to(() => SignupScreen());
-                      },
-                      child: const Text('Sign up'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                authProvider.signIn(context);
+              }),
+              SizedBox(height: height * 0.025),
+              const Text('or'),
+              SizedBox(height: height * 0.025),
+              Button().googleSignInButton(context, false),
+              SizedBox(height: height * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Don’t have an account? '),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SignupScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('Sign up'),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
