@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'feature/auth/login_screen.dart';
+import 'feature/auth/splash_screen.dart';
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/theme_provider.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       title: 'Recipe Explorer Pro',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).currentTheme,
-      home: LoginScreen(),
+      home: SplashScreen(),
     );
   }
 }
