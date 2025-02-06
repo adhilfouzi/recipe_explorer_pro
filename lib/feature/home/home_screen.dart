@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
+import '../../providers/recipe_provider.dart';
+import '../view_recipe/view_recipe_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,6 +11,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final recipeProvider = Provider.of<RecipeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +36,14 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Navigate to another screen
+                recipeProvider.fetchRecipes().whenComplete(() {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ViewRecipeScreen(
+                          recipe: recipeProvider.recipes.first),
+                    ),
+                  );
+                });
               },
               child: Text('Explore Recipes'),
             ),
