@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../handle/firebase_exceptionhandler.dart';
 import '../models/user_model.dart';
-import 'auth_repo.dart';
+import 'auth_service.dart';
 
-class UserRepo {
+class UserService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   /// Save user data to Firestore
@@ -22,7 +22,7 @@ class UserRepo {
     try {
       // Get the document snapshot for the authenticated user
       DocumentSnapshot snapshot =
-          await _db.collection("Users").doc(AuthRepo().authUser!.uid).get();
+          await _db.collection("Users").doc(AuthService().authUser!.uid).get();
 
       // Check if the document exists and return the user model
       if (snapshot.exists) {
@@ -63,7 +63,7 @@ class UserRepo {
   }) async {
     try {
       // Update the specified field in the authenticated user's document
-      await _db.collection("Users").doc(AuthRepo().authUser!.uid).update({
+      await _db.collection("Users").doc(AuthService().authUser!.uid).update({
         fieldName: value,
       });
     } catch (e) {
@@ -78,7 +78,7 @@ class UserRepo {
       // Update the entire document for the authenticated user
       await _db
           .collection("Users")
-          .doc(AuthRepo().authUser!.uid)
+          .doc(AuthService().authUser!.uid)
           .update(userMdel.toJson());
     } catch (e) {
       // Handle any exceptions that occur
@@ -90,7 +90,7 @@ class UserRepo {
   Future<void> removeUserRecord() async {
     try {
       // Delete the document for the authenticated user
-      await _db.collection("Users").doc(AuthRepo().authUser!.uid).delete();
+      await _db.collection("Users").doc(AuthService().authUser!.uid).delete();
     } catch (e) {
       // Handle any exceptions that occur
       throw ExceptionHandler.handleException(e);

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../data/repo/auth_repo.dart';
+import '../data/services/auth_service.dart';
 import '../utils/constants/snackbar.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -22,7 +22,7 @@ class AuthProvider with ChangeNotifier {
     if (!loginFormKey.currentState!.validate()) return;
 
     try {
-      await AuthRepo().signInWithEmailAndPassword(
+      await AuthService().signInWithEmailAndPassword(
           context,
           emailTextEditingController.text.trim(),
           passwordTextEditingController.text.trim());
@@ -43,7 +43,7 @@ class AuthProvider with ChangeNotifier {
   // void gooogleSignin() async {
   //   // Get.to(() => const LoadingPopup());
   //   try {
-  //     // await AuthRepository().signInWithGoogle();
+  //     // await AuthServicesitory().signInWithGoogle();
   //     emailTextEditingController.clear();
   //     passwordTextEditingController.clear();
   //   } catch (e) {

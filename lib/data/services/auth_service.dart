@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import '../handle/firebase_exceptionhandler.dart';
-import 'user_repo.dart';
+import 'user_service.dart';
 
-class AuthRepo {
+class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -29,7 +29,7 @@ class AuthRepo {
         password: password,
       );
 
-      await UserRepo()
+      await UserService()
           .fetchUserdetails(userCredential.user!.uid)
           .whenComplete(() {
         log("fetch User details");
