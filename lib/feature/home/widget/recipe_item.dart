@@ -48,7 +48,9 @@ class RecipeItem extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        recipe.instructions,
+                        {recipe.area, recipe.category}
+                            .where((e) => e.isNotEmpty)
+                            .join(' | '),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style:
