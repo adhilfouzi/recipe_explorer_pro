@@ -24,7 +24,8 @@ class HttpService {
       }
     } catch (e) {
       log("GET request failed with error: $e");
-      throw Exception('GET request failed');
+      // throw Exception('GET request failed');
+      return {};
     }
   }
 

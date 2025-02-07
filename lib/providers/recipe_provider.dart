@@ -47,15 +47,17 @@ class RecipeProvider with ChangeNotifier {
   }
 
   Future<void> fetchRecipesSeafood(String query) async {
+    if (query.isEmpty) {
+      return;
+    }
     await HttpService.getRequest(Site.filterByCategory(query), false)
-        .then((value) {
+        .then((value) async {
       final List<dynamic>? categoriesJson = value['meals'];
       if (categoriesJson != null) {
         for (var json in categoriesJson) {
-          fetchRecipeById(json['idMeal']);
+          await fetchRecipeById(json['idMeal']);
         }
       } else {
-        // _recipes = [];
         log('No data found');
       }
       notifyListeners();
@@ -63,9 +65,15 @@ class RecipeProvider with ChangeNotifier {
   }
 
   Future<void> fetchRecipeById(String id) async {
+    if (_recipes.any((element) => element.id == id)) {
+      return;
+    }
     await HttpService.getRequest(Site.lookupMealById(id), false).then((value) {
       if (value['meals'] != null) {
-        _recipes.add(RecipeModel.fromJson(value['meals'].first ?? {}));
+        RecipeModel recipe = RecipeModel.fromJson(value['meals'].first ?? {});
+        if (!_recipes.any((element) => element.id == recipe.id)) {
+          _recipes.add(recipe);
+        }
       }
       notifyListeners();
     });
@@ -86,6 +94,9 @@ class RecipeProvider with ChangeNotifier {
   }
 
   Future<void> fetchRecipesbySearch(String query) async {
+    if (query.isEmpty) {
+      return;
+    }
     await HttpService.getRequest(Site.searchMealByName(query), false)
         .then((value) {
       final List<dynamic>? categoriesJson = value['meals'];
