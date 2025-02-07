@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import '../data/models/category_model.dart';
 import '../data/models/recipe_model.dart';
@@ -29,46 +28,53 @@ class RecipeProvider with ChangeNotifier {
   }
 
   Future<void> fetchRecipesCategories() async {
-    await HttpService.getRequest(Site.allCategories(), false)
-        .then((value) async {
+    try {
+      final value = await HttpService.getRequest(Site.allCategories(), false);
       final List<dynamic>? categoriesJson = value['categories'];
       if (categoriesJson != null) {
         _category =
             categoriesJson.map((json) => CategoryModel.fromJson(json)).toList();
         for (var category in _category) {
-          await fetchRecipesbySearch(category.name);
-          await fetchRecipesSeafood(category.name);
+          await fetchRecipesByCategory(category.name);
         }
       } else {
         _category = [];
       }
       notifyListeners();
-    });
+    } catch (e) {
+      log('Error fetching categories: $e');
+    }
+  }
+
+  Future<void> fetchRecipesByCategory(String category) async {
+    await fetchRecipesBySearch(category);
+    await fetchRecipesSeafood(category);
   }
 
   Future<void> fetchRecipesSeafood(String query) async {
-    if (query.isEmpty) {
-      return;
-    }
-    await HttpService.getRequest(Site.filterByCategory(query), false)
-        .then((value) async {
-      final List<dynamic>? categoriesJson = value['meals'];
-      if (categoriesJson != null) {
-        for (var json in categoriesJson) {
+    if (query.isEmpty) return;
+    try {
+      final value =
+          await HttpService.getRequest(Site.filterByCategory(query), false);
+      final List<dynamic>? mealsJson = value['meals'];
+      if (mealsJson != null) {
+        for (var json in mealsJson) {
           await fetchRecipeById(json['idMeal']);
         }
       } else {
         log('No data found');
       }
       notifyListeners();
-    });
+    } catch (e) {
+      log('Error fetching seafood recipes: $e');
+    }
   }
 
   Future<void> fetchRecipeById(String id) async {
-    if (_recipes.any((element) => element.id == id)) {
-      return;
-    }
-    await HttpService.getRequest(Site.lookupMealById(id), false).then((value) {
+    if (_recipes.any((element) => element.id == id)) return;
+    try {
+      final value =
+          await HttpService.getRequest(Site.lookupMealById(id), false);
       if (value['meals'] != null) {
         RecipeModel recipe = RecipeModel.fromJson(value['meals'].first ?? {});
         if (!_recipes.any((element) => element.id == recipe.id)) {
@@ -76,12 +82,14 @@ class RecipeProvider with ChangeNotifier {
         }
       }
       notifyListeners();
-    });
+    } catch (e) {
+      log('Error fetching recipe by ID: $e');
+    }
   }
 
   void searchRecipes(String query) {
     _searchQuery = query;
-    fetchRecipesbySearch(query);
+    fetchRecipesBySearch(query);
     if (query.isEmpty) {
       _filteredRecipes = [];
     } else {
@@ -93,25 +101,25 @@ class RecipeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchRecipesbySearch(String query) async {
-    if (query.isEmpty) {
-      return;
-    }
-    await HttpService.getRequest(Site.searchMealByName(query), false)
-        .then((value) {
-      final List<dynamic>? categoriesJson = value['meals'];
-      if (categoriesJson != null) {
-        for (var json in categoriesJson) {
+  Future<void> fetchRecipesBySearch(String query) async {
+    if (query.isEmpty) return;
+    try {
+      final value =
+          await HttpService.getRequest(Site.searchMealByName(query), false);
+      final List<dynamic>? mealsJson = value['meals'];
+      if (mealsJson != null) {
+        for (var json in mealsJson) {
           RecipeModel recipe = RecipeModel.fromJson(json);
           if (!_recipes.any((element) => element.id == recipe.id)) {
             _recipes.add(recipe);
           }
         }
       } else {
-        // _recipes = [];
         log('No data found');
       }
       notifyListeners();
-    });
+    } catch (e) {
+      log('Error fetching recipes by search: $e');
+    }
   }
 }

@@ -16,9 +16,6 @@ class ViewRecipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //      final recipeProvider = Provider.of<RecipeProvider>(context);
-    //   recipeProvider.fetchRecipeById(recipe.id);
-    //  var proRecipe= recipeProvider.recipes;
     return Scaffold(
       body: Stack(
         children: [
