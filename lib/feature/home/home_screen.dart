@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     // Trending Section
-                    if (recipeProvider.trending.isNotEmpty)
+                    if (recipeProvider.recipes.isNotEmpty)
                       Text(
                         "Trending",
                         style: GoogleFonts.lato(
@@ -73,14 +73,14 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 12),
 
                     // Trending List
-                    if (recipeProvider.trending.isNotEmpty)
+                    if (recipeProvider.recipes.isNotEmpty)
                       SizedBox(
                         height: 180,
                         child: ListView.builder(
-                          itemCount: recipeProvider.trending.length,
+                          itemCount: recipeProvider.recipes.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            final recipe = recipeProvider.trending[index];
+                            final recipe = recipeProvider.recipes[index];
                             return TrendingItem(recipe: recipe);
                           },
                         ),

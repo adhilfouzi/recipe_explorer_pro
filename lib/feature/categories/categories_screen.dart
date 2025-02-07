@@ -14,7 +14,9 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final recipeProvider = Provider.of<RecipeProvider>(context);
-
+    final recipes = recipeProvider.recipes
+        .where((element) => element.category == category.name)
+        .toList();
     return Scaffold(
       body: SingleChildScrollView(
         physics: const ScrollPhysics(),
@@ -26,16 +28,16 @@ class CategoriesScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Horizontal List (Popular Categories)
-            if (recipeProvider.trending.isNotEmpty)
+            if (recipes.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 child: SizedBox(
                   height: 180,
                   child: ListView.builder(
-                    itemCount: recipeProvider.trending.length,
+                    itemCount: recipes.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      final recipe = recipeProvider.trending[index];
+                      final recipe = recipes[recipes.length - 1 - index];
                       return TrendingItem(recipe: recipe);
                     },
                   ),
@@ -47,11 +49,11 @@ class CategoriesScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
               child: ListView.builder(
                 controller: ScrollController(),
-                itemCount: recipeProvider.trending.length,
+                itemCount: recipes.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final recipe = recipeProvider.trending[index];
+                  final recipe = recipes[index];
                   return RecipeItem(recipe: recipe);
                 },
               ),
