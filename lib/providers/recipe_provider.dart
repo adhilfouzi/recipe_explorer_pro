@@ -1,11 +1,15 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:hive_ce/hive.dart';
 import '../data/models/category_model.dart';
 import '../data/models/recipe_model.dart';
 import '../utils/http/common_site.dart';
 import '../utils/http/http_service.dart';
 
 class RecipeProvider with ChangeNotifier {
+  late Box<RecipeModel> _recipeBox;
+  late Box<CategoryModel> _categoryBox;
+
   final List<RecipeModel> _recipes = [];
   List<RecipeModel> get recipes => _recipes;
 
@@ -20,11 +24,23 @@ class RecipeProvider with ChangeNotifier {
       _searchQuery.isEmpty ? _recipes : _filteredRecipes;
 
   RecipeProvider() {
+    _initializeHive();
+  }
+
+  Future<void> _initializeHive() async {
+    _recipeBox = await Hive.openBox<RecipeModel>('recipes');
+    _categoryBox = await Hive.openBox<CategoryModel>('categories');
     fetchAll();
   }
 
   Future<void> fetchAll() async {
-    await fetchRecipesCategories();
+    if (_categoryBox.isEmpty) {
+      await fetchRecipesCategories();
+    } else {
+      _category = _categoryBox.values.toList();
+      _recipes.addAll(_recipeBox.values);
+    }
+    notifyListeners();
   }
 
   Future<void> fetchRecipesCategories() async {
@@ -34,6 +50,7 @@ class RecipeProvider with ChangeNotifier {
       if (categoriesJson != null) {
         _category =
             categoriesJson.map((json) => CategoryModel.fromJson(json)).toList();
+        _categoryBox.addAll(_category);
         for (var category in _category) {
           await fetchRecipesByCategory(category.name);
         }
@@ -79,6 +96,7 @@ class RecipeProvider with ChangeNotifier {
         RecipeModel recipe = RecipeModel.fromJson(value['meals'].first ?? {});
         if (!_recipes.any((element) => element.id == recipe.id)) {
           _recipes.add(recipe);
+          _recipeBox.put(recipe.id, recipe);
         }
       }
       notifyListeners();
@@ -112,6 +130,7 @@ class RecipeProvider with ChangeNotifier {
           RecipeModel recipe = RecipeModel.fromJson(json);
           if (!_recipes.any((element) => element.id == recipe.id)) {
             _recipes.add(recipe);
+            _recipeBox.put(recipe.id, recipe);
           }
         }
       } else {
@@ -120,6 +139,27 @@ class RecipeProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       log('Error fetching recipes by search: $e');
+    }
+  }
+
+  void toggleFavorite(String id) {
+    final recipeIndex = _recipes.indexWhere((recipe) => recipe.id == id);
+    if (recipeIndex != -1) {
+      _recipes[recipeIndex] = RecipeModel(
+        id: _recipes[recipeIndex].id,
+        name: _recipes[recipeIndex].name,
+        category: _recipes[recipeIndex].category,
+        area: _recipes[recipeIndex].area,
+        instructions: _recipes[recipeIndex].instructions,
+        thumbnailUrl: _recipes[recipeIndex].thumbnailUrl,
+        youtubeUrl: _recipes[recipeIndex].youtubeUrl,
+        ingredients: _recipes[recipeIndex].ingredients,
+        measurements: _recipes[recipeIndex].measurements,
+        source: _recipes[recipeIndex].source,
+        isFavorite: !_recipes[recipeIndex].isFavorite,
+      );
+      _recipeBox.put(id, _recipes[recipeIndex]);
+      notifyListeners();
     }
   }
 }
