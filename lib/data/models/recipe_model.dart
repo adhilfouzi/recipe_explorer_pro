@@ -53,4 +53,19 @@ class RecipeModel {
       source: json['strSource'],
     );
   }
+
+  factory RecipeModel.empty() {
+    return RecipeModel(
+      id: '',
+      name: '',
+      category: '',
+      area: '',
+      instructions: '',
+      thumbnailUrl: '',
+      youtubeUrl: '',
+      ingredients: [],
+      measurements: [],
+      source: null,
+    );
+  }
 }

@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
-import '../../data/handle/firebase_exceptionhandler.dart';
-import '../../data/models/recipe_model.dart';
 
 class HttpService {
-  static Future<List<RecipeModel>> getRequest(String url,
+  static Future<Map<String, dynamic>> getRequest(String url,
       [bool isPrint = false]) async {
     _logRequest('GET', url);
 
@@ -15,12 +13,11 @@ class HttpService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        final List<dynamic>? mealsJson = data['meals'];
 
-        if (mealsJson != null) {
-          return mealsJson.map((json) => RecipeModel.fromJson(json)).toList();
+        if (data.isNotEmpty) {
+          return data;
         } else {
-          return [];
+          return {};
         }
       } else {
         throw Exception('Failed to load meals');
@@ -40,6 +37,6 @@ class HttpService {
       String method, http.Response response, String url, bool isPrint) {
     var data = isPrint ? response.body : '';
     log('HTTP $method Request:- Url:$url, HTTP Response: ${response.statusCode} - $data');
-    log(ExceptionHandler.handleException(response));
+    // log(ExceptionHandler.handleException(response));
   }
 }

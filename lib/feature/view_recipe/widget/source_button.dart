@@ -10,28 +10,33 @@ class RecipeButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          if (sourceUrl != null)
-            _buildButton(
-              onTap: () => _launchURL(sourceUrl!),
-              icon: Icons.link,
-              text: "Source",
-              colors: [Colors.brown.shade700, Colors.brown.shade400],
-            ),
-          if (youtubeUrl != null && youtubeUrl!.isNotEmpty)
-            _buildButton(
-              onTap: () => _launchURL(youtubeUrl!),
-              icon: Icons.play_circle_fill,
-              text: "Watch Video",
-              colors: [Colors.red.shade700, Colors.red.shade400],
-            ),
-        ],
-      ),
-    );
+    if (sourceUrl != null && sourceUrl!.isNotEmpty ||
+        youtubeUrl != null && youtubeUrl!.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            if (sourceUrl != null && sourceUrl!.isNotEmpty)
+              _buildButton(
+                onTap: () => _launchURL(sourceUrl!),
+                icon: Icons.link,
+                text: "Source",
+                colors: [Colors.brown.shade700, Colors.brown.shade400],
+              ),
+            if (youtubeUrl != null && youtubeUrl!.isNotEmpty)
+              _buildButton(
+                onTap: () => _launchURL(youtubeUrl!),
+                icon: Icons.play_circle_fill,
+                text: "Watch Video",
+                colors: [Colors.red.shade700, Colors.red.shade400],
+              ),
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   // Gradient Button Widget
