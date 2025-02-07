@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:recipe_explorer_pro/data/models/recipe_model.dart';
 
+import '../../../utils/constants/shimmer.dart';
 import '../../view_recipe/view_recipe_screen.dart';
 
 class RecipeItem extends StatelessWidget {
@@ -30,8 +32,13 @@ class RecipeItem extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.horizontal(left: Radius.circular(16)),
-                child: Image.network(recipe.thumbnailUrl,
-                    width: 100, fit: BoxFit.fill),
+                child: CachedNetworkImage(
+                  imageUrl: recipe.thumbnailUrl,
+                  width: 100,
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) => const ShimmerPlaceholder(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
               Expanded(
                 child: Padding(

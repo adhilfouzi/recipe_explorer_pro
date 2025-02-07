@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/models/recipe_model.dart';
+import '../../../utils/constants/shimmer.dart';
 import '../../view_recipe/view_recipe_screen.dart';
 
 class TrendingItem extends StatelessWidget {
@@ -23,10 +25,15 @@ class TrendingItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Stack(
             children: [
-              Image.network(recipe.thumbnailUrl,
-                  width: screen.width * 0.4,
-                  height: double.infinity,
-                  fit: BoxFit.fill),
+              CachedNetworkImage(
+                imageUrl: recipe.thumbnailUrl,
+                width: screen.width * 0.4,
+                height: double.infinity,
+                fit: BoxFit.fill,
+                placeholder: (context, url) =>
+                    Center(child: ShimmerPlaceholder()),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
               Positioned(
                 bottom: 0,
                 left: 0,

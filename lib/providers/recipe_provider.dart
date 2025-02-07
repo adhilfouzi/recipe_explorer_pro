@@ -39,6 +39,7 @@ class RecipeProvider with ChangeNotifier {
     } else {
       _category = _categoryBox.values.toList();
       _recipes.addAll(_recipeBox.values);
+      await fetchRecipesCategories();
     }
     notifyListeners();
   }
@@ -48,14 +49,18 @@ class RecipeProvider with ChangeNotifier {
       final value = await HttpService.getRequest(Site.allCategories(), false);
       final List<dynamic>? categoriesJson = value['categories'];
       if (categoriesJson != null) {
-        _category =
-            categoriesJson.map((json) => CategoryModel.fromJson(json)).toList();
+        _category.addAll(
+          categoriesJson
+              .map((json) => CategoryModel.fromJson(json))
+              .where((category) => !_categoryBox.values.any(
+                  (existingCategory) => existingCategory.id == category.id))
+              .toList(),
+        );
+
         _categoryBox.addAll(_category);
         for (var category in _category) {
           await fetchRecipesByCategory(category.name);
         }
-      } else {
-        _category = [];
       }
       notifyListeners();
     } catch (e) {

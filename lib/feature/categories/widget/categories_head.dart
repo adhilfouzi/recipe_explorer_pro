@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/models/category_model.dart';
+import '../../../utils/constants/shimmer.dart';
 
 class CategoriesHead extends StatelessWidget {
   final CategoryModel category;
@@ -16,11 +18,15 @@ class CategoriesHead extends StatelessWidget {
           child: ClipRRect(
             borderRadius:
                 const BorderRadius.vertical(bottom: Radius.circular(30)),
-            child: Image.network(
-              category.image,
+            child: CachedNetworkImage(
+              imageUrl: category.image,
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.3,
               fit: BoxFit.fill,
+              placeholder: (context, url) => Center(
+                child: ShimmerPlaceholder(),
+              ),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
         ),
