@@ -50,13 +50,13 @@ class _SplashScreenState extends State<SplashScreen> {
     if (user == null) {
       log("User is not logged in");
       await Future.delayed(const Duration(seconds: 2));
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     } else {
       log("User is logged in", error: "User is logged in");
       await Future.delayed(const Duration(seconds: 2));
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
     }

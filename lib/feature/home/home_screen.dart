@@ -57,9 +57,7 @@ class HomeScreen extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             final category = recipeProvider.categories[index];
-                            return CategoryItem(
-                                title: category.strCategory,
-                                image: category.strCategoryThumb);
+                            return CategoryItem(category: category);
                           },
                         ),
                       ),

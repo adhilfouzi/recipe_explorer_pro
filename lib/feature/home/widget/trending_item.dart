@@ -11,6 +11,7 @@ class TrendingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screen = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: GestureDetector(
@@ -23,18 +24,20 @@ class TrendingItem extends StatelessWidget {
           child: Stack(
             children: [
               Image.network(recipe.thumbnailUrl,
-                  width: 140, height: double.infinity, fit: BoxFit.fill),
+                  width: screen.width * 0.4,
+                  height: double.infinity,
+                  fit: BoxFit.fill),
               Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
                 child: Container(
                   padding: const EdgeInsets.all(8),
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withOpacity(0.35),
                   child: Text(
                     recipe.name,
                     style: GoogleFonts.lato(
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
