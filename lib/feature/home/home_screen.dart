@@ -3,7 +3,8 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/recipe_provider.dart';
-import 'favorite/favorite_screen.dart';
+import '../../providers/theme_provider.dart';
+import '../app_theme/app_theme_screen.dart';
 import 'widget/category_item.dart';
 import 'widget/recipe_item.dart';
 import 'widget/searchbar_widget.dart';
@@ -15,10 +16,13 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final recipeProvider = Provider.of<RecipeProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDarkMode = themeProvider.isDarkMode;
+    final theme = Theme.of(context);
     final filteredRecipes = recipeProvider.filteredRecipes;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: KeyboardDismissOnTap(
         child: SafeArea(
           child: SingleChildScrollView(
@@ -37,28 +41,38 @@ class HomeScreen extends StatelessWidget {
                         style: GoogleFonts.lato(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
+                          color: theme.textTheme.bodyLarge!.color,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const FavoriteScreen(),
-                                ),
-                              );
-                            },
-                            child: Icon(Icons.favorite,
-                                color: Colors.red, size: 30)),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const AppThemeScreen(),
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            Icons.dark_mode,
+                            color: isDarkMode
+                                ? Colors.amberAccent
+                                : Colors.blueAccent,
+                            size: 30,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
                   Text(
                     "Looking for your favourite meal",
-                    style:
-                        GoogleFonts.lato(fontSize: 16, color: Colors.grey[600]),
+                    style: GoogleFonts.lato(
+                      fontSize: 16,
+                      color: theme
+                          .textTheme.bodyMedium!.color, // ✅ Adaptive Text Color
+                    ),
                   ),
                   const SizedBox(height: 16),
 
@@ -87,7 +101,10 @@ class HomeScreen extends StatelessWidget {
                       Text(
                         "Trending",
                         style: GoogleFonts.lato(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: theme.textTheme.bodyLarge!.color,
+                        ),
                       ),
                     const SizedBox(height: 12),
 
@@ -124,9 +141,10 @@ class HomeScreen extends StatelessWidget {
                       child: Text(
                         "No recipes found!",
                         style: GoogleFonts.lato(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: theme.textTheme.bodyMedium!.color,
+                        ),
                       ),
                     ),
                 ],

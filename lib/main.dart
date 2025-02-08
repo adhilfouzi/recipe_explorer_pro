@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_explorer_pro/data/models/hive_registrar.g.dart';
 import 'feature/auth/splash_screen.dart';
-import 'firebase_options.dart';
+import 'data/handle/firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/recipe_provider.dart';
 import 'providers/theme_provider.dart';
@@ -22,16 +22,16 @@ void main() async {
       ..registerAdapters();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
-    ).then((value) => log("connected ${value.options.asMap}"));
+    ).then((value) => log("Connected to Firebase: ${value.options.asMap}"));
   } catch (e) {
     log('Failed to initialize Firebase: $e');
   }
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => RecipeProvider()),
-        // ChangeNotifierProvider(create: (context) => FavoritesProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
       child: const MyApp(),
@@ -44,11 +44,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Recipe Explorer Pro',
-      debugShowCheckedModeBanner: false,
-      theme: Provider.of<ThemeProvider>(context).currentTheme,
-      home: SplashScreen(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          title: 'Recipe Explorer Pro',
+          debugShowCheckedModeBanner: false,
+          theme: themeProvider.currentTheme,
+          home: SplashScreen(),
+        );
+      },
     );
   }
 }

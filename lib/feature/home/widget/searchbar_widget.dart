@@ -12,21 +12,19 @@ class SearchBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final recipeProvider = Provider.of<RecipeProvider>(context, listen: false);
     final TextEditingController searchController = TextEditingController();
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.white, Colors.grey[200]!],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black26,
+            color: isDarkMode ? Colors.black54 : Colors.black26,
             blurRadius: 8,
-            offset: Offset(2, 2),
+            offset: const Offset(2, 2),
           ),
         ],
       ),
@@ -35,12 +33,16 @@ class SearchBarWidget extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: searchController,
+              style: TextStyle(color: theme.textTheme.bodyLarge!.color),
               onChanged: (query) {
                 recipeProvider.searchRecipes(query);
               },
               decoration: InputDecoration(
                 hintText: "Search",
-                hintStyle: GoogleFonts.lato(fontSize: 16),
+                hintStyle: GoogleFonts.lato(
+                  fontSize: 16,
+                  color: theme.textTheme.bodyMedium!.color,
+                ),
                 border: InputBorder.none,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -50,16 +52,18 @@ class SearchBarWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [MyColors.mainColor, MyColors.secondaryColor],
+                colors: isDarkMode
+                    ? [Colors.deepPurple, Colors.purpleAccent]
+                    : [MyColors.mainColor, MyColors.secondaryColor],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black26,
+                  color: isDarkMode ? Colors.black87 : Colors.black26,
                   blurRadius: 4,
-                  offset: Offset(2, 2),
+                  offset: const Offset(2, 2),
                 ),
               ],
             ),

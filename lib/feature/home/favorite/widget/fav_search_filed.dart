@@ -10,46 +10,55 @@ class SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDarkMode ? Colors.grey[900] : Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black26,
+            color: isDarkMode ? Colors.black54 : Colors.black26,
             blurRadius: 8,
-            offset: Offset(2, 2),
+            offset: const Offset(2, 2),
           ),
         ],
       ),
       child: Row(
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: MyColors.mainColor,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black26,
+                  color: isDarkMode ? Colors.black45 : Colors.black26,
                   blurRadius: 4,
-                  offset: Offset(2, 2),
+                  offset: const Offset(2, 2),
                 ),
               ],
             ),
             child: IconButton(
               icon: const Icon(Icons.search, color: Colors.white),
               onPressed: () {
-                // recipeProvider.searchRecipes(searchController.text);
+                // Search logic
               },
             ),
           ),
           Expanded(
             child: TextField(
               onChanged: onChanged,
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : Colors.black,
+              ),
               decoration: InputDecoration(
                 hintText: "Search",
-                hintStyle: GoogleFonts.lato(fontSize: 16),
+                hintStyle: GoogleFonts.lato(
+                  fontSize: 16,
+                  color: isDarkMode ? Colors.white70 : Colors.black54,
+                ),
                 border: InputBorder.none,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

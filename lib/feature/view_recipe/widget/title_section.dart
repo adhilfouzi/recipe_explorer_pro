@@ -12,6 +12,8 @@ class TitleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -19,9 +21,9 @@ class TitleSection extends StatelessWidget {
           child: Text(
             recipe.name,
             style: GoogleFonts.lato(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-                color: Colors.brown.shade900),
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+            ),
             overflow: TextOverflow.fade,
           ),
         ),
@@ -33,7 +35,7 @@ class TitleSection extends StatelessWidget {
               return IconButton(
                 icon: Icon(
                   Icons.favorite,
-                  color: isFavorite ? Colors.red : Colors.black45,
+                  color: isFavorite ? Colors.red : theme.iconTheme.color,
                   size: 30,
                 ),
                 onPressed: () => recipeProvider.toggleFavorite(recipe.id),

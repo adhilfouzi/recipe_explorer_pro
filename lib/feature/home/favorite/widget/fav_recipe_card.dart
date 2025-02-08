@@ -47,9 +47,12 @@ class RecipeCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      recipe.category,
-                      style: GoogleFonts.lato(
-                          fontSize: 14, color: Colors.grey.shade600),
+                      {recipe.area, recipe.category}
+                          .where((e) => e.isNotEmpty)
+                          .join(' | '),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.lato(fontSize: 14, color: Colors.grey),
                     ),
                   ],
                 ),

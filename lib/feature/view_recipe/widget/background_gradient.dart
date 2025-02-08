@@ -5,10 +5,15 @@ class BackgroundGradient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFFFEF9E7), Color(0xFFFFE0B2)],
+          colors: isDarkMode
+              ? [Colors.black87, Colors.black54]
+              : [const Color(0xFFFEF9E7), const Color(0xFFFFE0B2)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),

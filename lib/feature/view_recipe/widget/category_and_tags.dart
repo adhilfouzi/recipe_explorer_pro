@@ -13,25 +13,29 @@ class CategoryAndTags extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildTag("Category: $category"),
+          _buildTag(context, "Category: $category"),
           const SizedBox(width: 10),
-          _buildTag("Tags: $tags"),
+          _buildTag(context, "Tags: $tags"),
         ],
       ),
     );
   }
 
-  Widget _buildTag(String text) {
+  Widget _buildTag(BuildContext context, String text) {
+    final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
       decoration: BoxDecoration(
-        color: Colors.brown.shade100,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         text,
-        style: GoogleFonts.lato(fontSize: 14, color: Colors.brown.shade800),
+        style: GoogleFonts.lato(fontSize: 14),
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

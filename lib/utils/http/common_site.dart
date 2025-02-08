@@ -15,14 +15,8 @@ class Site {
   /// Lookup a single random meal
   static String randomMeal() => '$_baseUrl/random.php';
 
-  /// Lookup a selection of 10 random meals (Premium API Only)
-  // static String randomSelection() => '$_baseUrl/randomselection.php';
-
   /// List all meal categories
   static String allCategories() => '$_baseUrl/categories.php';
-
-  /// Latest Meals (Premium API Only)
-  // static String latestMeals() => '$_baseUrl/latest.php';
 
   /// List all categories
   static String listAllCategories() => '$_baseUrl/list.php?c=list';
@@ -36,12 +30,6 @@ class Site {
   /// Filter by main ingredient
   static String filterByMainIngredient(String ingredient) =>
       '$_baseUrl/filter.php?i=$ingredient';
-
-  /// Filter by multiple ingredients (Premium API Only)
-  // static String filterByMultipleIngredients(List<String> ingredients) {
-  //   final ingredientsParam = ingredients.join(',');
-  //   return '$_baseUrl/filter.php?i=$ingredientsParam';
-  // }
 
   /// Filter by category
   static String filterByCategory(String category) =>

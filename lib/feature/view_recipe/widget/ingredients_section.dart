@@ -11,6 +11,10 @@ class IngredientsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textColor = theme.colorScheme.onSurface;
+    final titleColor = theme.colorScheme.primary;
+
     return RecipeGlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,9 +24,10 @@ class IngredientsSection extends StatelessWidget {
             child: Text(
               "Ingredients",
               style: GoogleFonts.lato(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown.shade800),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: titleColor,
+              ),
             ),
           ),
           ...List.generate(
@@ -32,17 +37,22 @@ class IngredientsSection extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("${index + 1}.",
-                      style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black.withOpacity(0.7))),
+                  Text(
+                    "${index + 1}.",
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: textColor,
+                    ),
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                        "${recipe.ingredients[index]} - ${recipe.measurements[index]}",
-                        style: GoogleFonts.poppins(fontSize: 16),
-                        textAlign: TextAlign.justify),
+                      "${recipe.ingredients[index]} - ${recipe.measurements[index]}",
+                      style:
+                          GoogleFonts.poppins(fontSize: 16, color: textColor),
+                      textAlign: TextAlign.justify,
+                    ),
                   ),
                 ],
               ),

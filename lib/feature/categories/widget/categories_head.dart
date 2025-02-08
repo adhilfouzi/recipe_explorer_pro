@@ -11,6 +11,10 @@ class CategoriesHead extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode =
+        theme.brightness == Brightness.dark; // ✅ Detect dark mode
+
     return Stack(
       children: [
         Hero(
@@ -26,7 +30,8 @@ class CategoriesHead extends StatelessWidget {
               placeholder: (context, url) => Center(
                 child: ShimmerPlaceholder(),
               ),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) => Icon(Icons.error,
+                  color: isDarkMode ? Colors.white70 : Colors.black),
             ),
           ),
         ),
@@ -34,49 +39,58 @@ class CategoriesHead extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: CircleAvatar(
-              backgroundColor: Colors.black.withOpacity(0.5),
+              backgroundColor: isDarkMode
+                  ? Colors.white.withOpacity(0.2)
+                  : Colors.black.withOpacity(0.5), // ✅ Dark mode friendly
               child: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                icon: Icon(Icons.arrow_back,
+                    color: isDarkMode ? Colors.white : Colors.black),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
           ),
         ),
-        Container(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.3,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white.withOpacity(0.8), Colors.transparent],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
+        ClipRRect(
+          borderRadius:
+              const BorderRadius.vertical(bottom: Radius.circular(30)),
+          child: Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.3,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: isDarkMode
+                    ? [Colors.black, Colors.transparent]
+                    : [Colors.white, Colors.transparent],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+              ),
             ),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                category.name,
-                style: GoogleFonts.lato(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.black,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  category.name,
+                  style: GoogleFonts.lato(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w900,
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                category.description,
-                style: GoogleFonts.lato(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
+                const SizedBox(height: 4),
+                Text(
+                  category.description,
+                  style: GoogleFonts.lato(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: isDarkMode ? Colors.white70 : Colors.black,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],

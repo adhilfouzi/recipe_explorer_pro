@@ -18,18 +18,22 @@ class RecipeButtons extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             if (sourceUrl != null && sourceUrl!.isNotEmpty)
-              _buildButton(
-                onTap: () => _launchURL(sourceUrl!),
-                icon: Icons.link,
-                text: "Source",
-                colors: [Colors.brown.shade700, Colors.brown.shade400],
+              Expanded(
+                child: _buildButton(
+                  onTap: () => _launchURL(sourceUrl!),
+                  icon: Icons.link,
+                  text: "Source",
+                  colors: [Colors.brown.shade700, Colors.brown.shade400],
+                ),
               ),
             if (youtubeUrl != null && youtubeUrl!.isNotEmpty)
-              _buildButton(
-                onTap: () => _launchURL(youtubeUrl!),
-                icon: Icons.play_circle_fill,
-                text: "Watch Video",
-                colors: [Colors.red.shade700, Colors.red.shade400],
+              Expanded(
+                child: _buildButton(
+                  onTap: () => _launchURL(youtubeUrl!),
+                  icon: Icons.play_circle_fill,
+                  text: "Watch Video",
+                  colors: [Colors.red.shade700, Colors.red.shade400],
+                ),
               ),
           ],
         ),
@@ -50,7 +54,7 @@ class RecipeButtons extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        width: 160,
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         height: 50,
         decoration: BoxDecoration(
           gradient: LinearGradient(colors: colors),

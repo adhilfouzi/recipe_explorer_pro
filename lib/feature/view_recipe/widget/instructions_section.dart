@@ -10,6 +10,10 @@ class InstructionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textColor = theme.colorScheme.onSurface;
+    final titleColor = theme.colorScheme.primary;
+
     return RecipeGlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,14 +23,14 @@ class InstructionsSection extends StatelessWidget {
             child: Text(
               "Instructions",
               style: GoogleFonts.lato(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown.shade800),
+                  fontSize: 20, fontWeight: FontWeight.bold, color: titleColor),
             ),
           ),
-          Text(instructions,
-              style: GoogleFonts.lato(fontSize: 16),
-              textAlign: TextAlign.start),
+          Text(
+            instructions,
+            style: GoogleFonts.lato(fontSize: 16, color: textColor),
+            textAlign: TextAlign.start,
+          ),
         ],
       ),
     );

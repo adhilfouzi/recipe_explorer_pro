@@ -19,11 +19,7 @@ class FavoriteScreen extends StatelessWidget {
             centerTitle: true,
             title: const Text(
               "Favorite Recipes",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.black,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
           body: Column(
