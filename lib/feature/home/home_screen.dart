@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
       body: KeyboardDismissOnTap(
         child: SafeArea(
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
+            physics: ScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Column(
