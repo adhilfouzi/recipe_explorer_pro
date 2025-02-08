@@ -27,7 +27,7 @@ class CategoryItem extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: category.image,
                 height: 60,
-                // width: 80,
+                width: 80,
                 fit: BoxFit.fill,
                 placeholder: (context, url) => ShimmerPlaceholder(),
                 errorWidget: (context, url, error) => Icon(Icons.error),

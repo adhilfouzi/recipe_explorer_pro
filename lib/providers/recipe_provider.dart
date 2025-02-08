@@ -11,6 +11,8 @@ class RecipeProvider with ChangeNotifier {
   late Box<RecipeModel> _recipeBox;
   late Box<CategoryModel> _categoryBox;
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
   final List<RecipeModel> _recipes = [];
   List<RecipeModel> get recipes => _recipes;
   final List<RecipeModel> _trending = [];
@@ -35,10 +37,19 @@ class RecipeProvider with ChangeNotifier {
     _initializeHive();
   }
 
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   Future<void> _initializeHive() async {
+    isLoading = true;
+    notifyListeners();
     _recipeBox = await Hive.openBox<RecipeModel>('recipes');
     _categoryBox = await Hive.openBox<CategoryModel>('categories');
-    fetchAll();
+    await fetchAll();
+    isLoading = false;
+    notifyListeners();
   }
 
   Future<void> fetchAll() async {
