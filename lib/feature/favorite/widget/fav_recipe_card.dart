@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../data/models/recipe_model.dart';
-import '../../../view_recipe/view_recipe_screen.dart';
+import '../../../data/models/recipe_model.dart';
+import '../../view_recipe/view_recipe_screen.dart';
 
 class RecipeCard extends StatelessWidget {
   final RecipeModel recipe;

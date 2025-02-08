@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../providers/recipe_provider.dart';
+import '../../providers/recipe_provider.dart';
 import 'widget/empty_search.dart';
 import 'widget/fav_recipe_card.dart';
 import 'widget/fav_search_filed.dart';
