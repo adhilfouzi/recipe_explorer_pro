@@ -57,7 +57,9 @@ class RecipeProvider with ChangeNotifier {
               .toList(),
         );
 
-        _categoryBox.addAll(_category);
+        for (var category in _category) {
+          _categoryBox.put(category.id, category);
+        }
         for (var category in _category) {
           await fetchRecipesByCategory(category.name);
         }
