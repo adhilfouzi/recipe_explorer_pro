@@ -23,6 +23,11 @@ class RecipeProvider with ChangeNotifier {
   List<RecipeModel> get filteredRecipes =>
       _searchQuery.isEmpty ? _recipes : _filteredRecipes;
 
+  List<RecipeModel> _filteredFavoriteRecipes = [];
+  List<RecipeModel> get filteredFavoriteRecipes => _searchQuery.isEmpty
+      ? _recipes.where((recipe) => recipe.isFavorite).toList()
+      : _filteredFavoriteRecipes;
+
   RecipeProvider() {
     _initializeHive();
   }
@@ -39,7 +44,7 @@ class RecipeProvider with ChangeNotifier {
     } else {
       _category = _categoryBox.values.toList();
       _recipes.addAll(_recipeBox.values);
-      await fetchRecipesCategories();
+      // await fetchRecipesCategories();
     }
     notifyListeners();
   }
@@ -126,6 +131,21 @@ class RecipeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void searchFavoriteRecipe(String query) {
+    _searchQuery = query;
+    if (query.isEmpty) {
+      _filteredFavoriteRecipes =
+          _recipes.where((recipe) => recipe.isFavorite).toList();
+    } else {
+      _filteredFavoriteRecipes = _recipes
+          .where((recipe) =>
+              recipe.isFavorite &&
+              recipe.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+    notifyListeners();
+  }
+
   Future<void> fetchRecipesBySearch(String query) async {
     if (query.isEmpty) return;
     try {
@@ -166,7 +186,18 @@ class RecipeProvider with ChangeNotifier {
         isFavorite: !_recipes[recipeIndex].isFavorite,
       );
       _recipeBox.put(id, _recipes[recipeIndex]);
+      if (_recipes[recipeIndex].isFavorite) {
+        _filteredFavoriteRecipes.add(_recipes[recipeIndex]);
+      } else {
+        _filteredFavoriteRecipes.removeWhere((recipe) => recipe.id == id);
+      }
+      log('Recipe ${_recipes[recipeIndex].name} toggled favorite: ${_recipes[recipeIndex].isFavorite}');
       notifyListeners();
     }
+  }
+
+  bool isFavorite(String id) {
+    final recipe = _recipes.firstWhere((recipe) => recipe.id == id);
+    return recipe.isFavorite;
   }
 }

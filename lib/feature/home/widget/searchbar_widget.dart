@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/recipe_provider.dart';
+import '../../../utils/constants/colors.dart';
 
 class SearchBarWidget extends StatelessWidget {
   const SearchBarWidget({super.key});
@@ -13,9 +14,21 @@ class SearchBarWidget extends StatelessWidget {
     final TextEditingController searchController = TextEditingController();
 
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        gradient: LinearGradient(
+          colors: [Colors.white, Colors.grey[200]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 8,
+            offset: Offset(2, 2),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -35,9 +48,20 @@ class SearchBarWidget extends StatelessWidget {
             ),
           ),
           Container(
-            decoration: const BoxDecoration(
-              color: Colors.redAccent,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [MyColors.mainColor, MyColors.secondaryColor],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
               shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 4,
+                  offset: Offset(2, 2),
+                ),
+              ],
             ),
             child: IconButton(
               icon: const Icon(Icons.search, color: Colors.white),

@@ -3,6 +3,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/recipe_provider.dart';
+import 'favorite/favorite_screen.dart';
 import 'widget/category_item.dart';
 import 'widget/recipe_item.dart';
 import 'widget/searchbar_widget.dart';
@@ -28,12 +29,30 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title & Subtitle
-                  Text(
-                    "Cook Book",
-                    style: GoogleFonts.lato(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Cook Book",
+                        style: GoogleFonts.lato(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const FavoriteScreen(),
+                                ),
+                              );
+                            },
+                            child: Icon(Icons.favorite,
+                                color: Colors.red, size: 30)),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Text(

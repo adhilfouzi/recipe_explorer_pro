@@ -30,7 +30,7 @@ class ViewRecipeScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TitleSection(title: recipe.name),
+                      TitleSection(recipe: recipe),
                       CategoryAndTags(
                           category: recipe.category, tags: recipe.area),
                       const SizedBox(height: 15),

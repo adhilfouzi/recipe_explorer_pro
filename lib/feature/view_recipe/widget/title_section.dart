@@ -1,19 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import '../../../data/models/recipe_model.dart';
+import '../../../providers/recipe_provider.dart';
 
 class TitleSection extends StatelessWidget {
-  final String title;
+  final RecipeModel recipe;
 
-  const TitleSection({super.key, required this.title});
+  const TitleSection({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: GoogleFonts.lato(
-          fontSize: 26,
-          fontWeight: FontWeight.bold,
-          color: Colors.brown.shade900),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            recipe.name,
+            style: GoogleFonts.lato(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.brown.shade900),
+            overflow: TextOverflow.fade,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Consumer<RecipeProvider>(
+            builder: (context, recipeProvider, child) {
+              final isFavorite = recipeProvider.isFavorite(recipe.id);
+              return IconButton(
+                icon: Icon(
+                  Icons.favorite,
+                  color: isFavorite ? Colors.red : Colors.black45,
+                  size: 30,
+                ),
+                onPressed: () => recipeProvider.toggleFavorite(recipe.id),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
