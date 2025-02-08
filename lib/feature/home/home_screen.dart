@@ -20,6 +20,7 @@ class HomeScreen extends StatelessWidget {
     final isDarkMode = themeProvider.isDarkMode;
     final theme = Theme.of(context);
     final filteredRecipes = recipeProvider.filteredRecipes;
+    final trending = recipeProvider.trending;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -109,14 +110,14 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 12),
 
                     // Trending List
-                    if (recipeProvider.recipes.isNotEmpty)
+                    if (trending.isNotEmpty)
                       SizedBox(
                         height: 180,
                         child: ListView.builder(
-                          itemCount: recipeProvider.recipes.length,
+                          itemCount: trending.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            final recipe = recipeProvider.recipes[index];
+                            final recipe = trending[index];
                             return TrendingItem(recipe: recipe);
                           },
                         ),

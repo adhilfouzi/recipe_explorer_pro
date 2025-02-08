@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'dart:developer' as developer;
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import '../data/models/category_model.dart';
@@ -12,6 +13,8 @@ class RecipeProvider with ChangeNotifier {
 
   final List<RecipeModel> _recipes = [];
   List<RecipeModel> get recipes => _recipes;
+  final List<RecipeModel> _trending = [];
+  List<RecipeModel> get trending => _trending;
 
   List<CategoryModel> _category = [];
   List<CategoryModel> get categories => _category;
@@ -45,6 +48,7 @@ class RecipeProvider with ChangeNotifier {
       _category = _categoryBox.values.toList();
       _recipes.addAll(_recipeBox.values);
       // await fetchRecipesCategories();
+      _selectTrendingRecipes();
     }
     notifyListeners();
   }
@@ -71,7 +75,7 @@ class RecipeProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      log('Error fetching categories: $e');
+      developer.log('Error fetching categories: $e');
     }
   }
 
@@ -91,11 +95,11 @@ class RecipeProvider with ChangeNotifier {
           await fetchRecipeById(json['idMeal']);
         }
       } else {
-        log('No data found');
+        developer.log('No data found');
       }
       notifyListeners();
     } catch (e) {
-      log('Error fetching seafood recipes: $e');
+      developer.log('Error fetching seafood recipes: $e');
     }
   }
 
@@ -113,7 +117,7 @@ class RecipeProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      log('Error fetching recipe by ID: $e');
+      developer.log('Error fetching recipe by ID: $e');
     }
   }
 
@@ -161,11 +165,11 @@ class RecipeProvider with ChangeNotifier {
           }
         }
       } else {
-        log('No data found');
+        developer.log('No data found');
       }
       notifyListeners();
     } catch (e) {
-      log('Error fetching recipes by search: $e');
+      developer.log('Error fetching recipes by search: $e');
     }
   }
 
@@ -191,7 +195,7 @@ class RecipeProvider with ChangeNotifier {
       } else {
         _filteredFavoriteRecipes.removeWhere((recipe) => recipe.id == id);
       }
-      log('Recipe ${_recipes[recipeIndex].name} toggled favorite: ${_recipes[recipeIndex].isFavorite}');
+      // developer.log('Recipe ${_recipes[recipeIndex].name} toggled favorite: ${_recipes[recipeIndex].isFavorite}');
       notifyListeners();
     }
   }
@@ -199,5 +203,27 @@ class RecipeProvider with ChangeNotifier {
   bool isFavorite(String id) {
     final recipe = _recipes.firstWhere((recipe) => recipe.id == id);
     return recipe.isFavorite;
+  }
+
+  /// Select 10 random recipes for trending. If empty, retry after 2 seconds.
+  void _selectTrendingRecipes() {
+    if (_recipeBox.isNotEmpty) {
+      final random = Random();
+      final allRecipes = _recipeBox.values.toList();
+      _trending.clear();
+
+      /// Shuffle the list and pick 10 random items
+      _trending.addAll(
+        allRecipes..shuffle(random),
+      );
+      _trending.length = min(10, _trending.length); // Ensure max 10 items
+
+      notifyListeners();
+    } else {
+      /// Retry after 2 seconds if no data
+      Future.delayed(const Duration(seconds: 2), () {
+        _selectTrendingRecipes();
+      });
+    }
   }
 }
