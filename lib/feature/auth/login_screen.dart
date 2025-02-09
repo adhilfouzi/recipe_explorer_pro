@@ -32,10 +32,7 @@ class LoginScreen extends StatelessWidget {
                 height: height * 0.3,
                 width: width,
                 child: Center(
-                  child: Image.asset(
-                    Images.logo,
-                    scale: 5,
-                  ),
+                  child: Image.asset(Images.logo, height: height * 0.25),
                 ),
               ),
               MyTextField(
@@ -65,7 +62,13 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: height * 0.025),
               const Text('or'),
               SizedBox(height: height * 0.025),
-              Button().googleSignInButton(context, false),
+              Button().googleSignInButton(
+                context,
+                false,
+                () {
+                  authProvider.googleSignIn(context);
+                },
+              ),
               SizedBox(height: height * 0.02),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

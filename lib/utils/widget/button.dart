@@ -156,11 +156,10 @@ class Button {
     );
   }
 
-  Widget googleSignInButton(BuildContext context, bool isBlack) {
+  Widget googleSignInButton(
+      BuildContext context, bool isBlack, VoidCallback onPressed) {
     return ElevatedButton(
-      onPressed: () {
-        // SigninController().gooogleSignin();
-      },
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         foregroundColor: isBlack ? Colors.white : Colors.black,
         backgroundColor: isBlack ? Colors.black : Colors.white,

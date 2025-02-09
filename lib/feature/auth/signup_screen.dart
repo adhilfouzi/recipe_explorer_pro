@@ -29,10 +29,7 @@ class SignupScreen extends StatelessWidget {
                   height: height * 0.3,
                   width: width,
                   child: Center(
-                    child: Image.asset(
-                      Images.logo,
-                      scale: 5,
-                    ),
+                    child: Image.asset(Images.logo, height: height * 0.25),
                   ),
                 ),
                 MyTextField(

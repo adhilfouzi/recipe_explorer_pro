@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/colors.dart';
 import '../validators/validator.dart';
 
 class MyTextField extends StatelessWidget {
@@ -11,7 +10,6 @@ class MyTextField extends StatelessWidget {
   final String? labelText;
   final bool obscureText;
   final String? Function(String?)? validator;
-
   final IconData? icon;
 
   const MyTextField({
@@ -42,14 +40,14 @@ class MyTextField extends StatelessWidget {
           hintText: hintText,
           labelText: labelText ?? hintText,
           filled: true,
-          fillColor: MyColors.secondarybackgroundColor,
+          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
           suffixIcon: icon != null ? Icon(icon) : null,
           border: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.transparent),
+            borderSide: BorderSide(color: Colors.transparent),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: MyColors.mainColor),
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
@@ -97,7 +95,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           labelText: widget.labelText ?? widget.hintText ?? 'Password',
           hintText: widget.hintText ?? 'Password',
           filled: true,
-          fillColor: MyColors.secondarybackgroundColor,
+          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
           suffixIcon: IconButton(
             icon: Icon(obscureText ? Icons.visibility : Icons.visibility_off),
             onPressed: () {
@@ -107,11 +105,11 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             },
           ),
           border: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.transparent),
+            borderSide: BorderSide(color: Colors.transparent),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: MyColors.mainColor),
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
