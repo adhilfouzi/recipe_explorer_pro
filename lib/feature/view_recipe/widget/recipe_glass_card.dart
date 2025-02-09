@@ -17,8 +17,8 @@ class RecipeGlassCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: isDarkMode
-                ? Colors.grey.withOpacity(0.2)
-                : Colors.brown.withOpacity(0.1),
+                ? Colors.grey.withAlpha((0.2 * 255).toInt())
+                : Colors.brown.withAlpha((0.1 * 255).toInt()),
           ),
         ],
       ),

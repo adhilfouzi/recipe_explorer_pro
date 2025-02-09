@@ -28,13 +28,14 @@ class RecipeModelAdapter extends TypeAdapter<RecipeModel> {
       measurements: (fields[8] as List).cast<String>(),
       source: fields[9] as String?,
       isFavorite: fields[10] == null ? false : fields[10] as bool,
+      isItMine: fields[11] == null ? false : fields[11] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, RecipeModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class RecipeModelAdapter extends TypeAdapter<RecipeModel> {
       ..writeByte(9)
       ..write(obj.source)
       ..writeByte(10)
-      ..write(obj.isFavorite);
+      ..write(obj.isFavorite)
+      ..writeByte(11)
+      ..write(obj.isItMine);
   }
 
   @override

@@ -58,7 +58,7 @@ class RecipeProvider with ChangeNotifier {
     } else {
       _category = _categoryBox.values.toList();
       _recipes.addAll(_recipeBox.values);
-      // await fetchRecipesCategories();
+      await fetchRecipesCategories();
       _selectTrendingRecipes();
     }
     notifyListeners();
@@ -206,7 +206,6 @@ class RecipeProvider with ChangeNotifier {
       } else {
         _filteredFavoriteRecipes.removeWhere((recipe) => recipe.id == id);
       }
-      // developer.log('Recipe ${_recipes[recipeIndex].name} toggled favorite: ${_recipes[recipeIndex].isFavorite}');
       notifyListeners();
     }
   }
@@ -236,5 +235,130 @@ class RecipeProvider with ChangeNotifier {
         _selectTrendingRecipes();
       });
     }
+  }
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
+  final TextEditingController areaController = TextEditingController();
+  final TextEditingController instructionsController = TextEditingController();
+  final TextEditingController thumbnailUrlController = TextEditingController();
+  final TextEditingController youtubeUrlController = TextEditingController();
+
+  Future<void> addRecipe(BuildContext context) async {
+    try {
+      if (nameController.text.isEmpty ||
+          categoryController.text.isEmpty ||
+          areaController.text.isEmpty ||
+          instructionsController.text.isEmpty ||
+          thumbnailUrlController.text.isEmpty ||
+          ingredientControllers.any((controller) => controller.text.isEmpty) ||
+          measurementControllers.any((controller) => controller.text.isEmpty)) {
+        developer.log('Please fill all the fields');
+        return;
+      }
+      developer.log(' fill all the fields');
+      var recipe = RecipeModel(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          name: nameController.text,
+          category: categoryController.text,
+          area: areaController.text,
+          instructions: instructionsController.text,
+          thumbnailUrl: thumbnailUrlController.text,
+          youtubeUrl: youtubeUrlController.text,
+          ingredients: ingredientControllers
+              .map((controller) => controller.text)
+              .toList(),
+          measurements: measurementControllers
+              .map((controller) => controller.text)
+              .toList(),
+          source: '',
+          isFavorite: false,
+          isItMine: true);
+      developer.log(recipe.name);
+      if (!_recipes.any((element) => element.id == recipe.id)) {
+        developer.log('message');
+        _recipes.add(recipe);
+        await _recipeBox.put(recipe.id, recipe);
+        notifyListeners();
+      } else {
+        developer.log('Recipe with id ${recipe.id} already exists.');
+      }
+      clearFields();
+    } catch (e) {
+      developer.log('Error adding recipe: $e');
+    }
+    notifyListeners();
+  }
+
+  final List<TextEditingController> _ingredientControllers = [];
+  final List<TextEditingController> _measurementControllers = [];
+
+  List<TextEditingController> get ingredientControllers =>
+      _ingredientControllers;
+  List<TextEditingController> get measurementControllers =>
+      _measurementControllers;
+  int get ingredientsCount => _ingredientControllers.length;
+
+  // RecipeProvider() {
+  //   addIngredient(); // Start with one default ingredient field
+  // }
+
+  // Add a new ingredient and measurement field
+  void addIngredient() {
+    ingredientControllers.add(TextEditingController());
+    measurementControllers.add(TextEditingController());
+    notifyListeners();
+  }
+
+  // Remove an ingredient and measurement field
+  void removeIngredient(int index) {
+    if (ingredientControllers.length > 1) {
+      ingredientControllers[index].dispose();
+      measurementControllers[index].dispose();
+      ingredientControllers.removeAt(index);
+      measurementControllers.removeAt(index);
+      notifyListeners();
+    }
+  }
+
+  // Clear all controllers when recipe is saved
+  void clearFields() {
+    nameController.clear();
+    categoryController.clear();
+    areaController.clear();
+    instructionsController.clear();
+    thumbnailUrlController.clear();
+    youtubeUrlController.clear();
+
+    for (var controller in ingredientControllers) {
+      controller.dispose();
+    }
+    for (var controller in measurementControllers) {
+      controller.dispose();
+    }
+
+    ingredientControllers.clear();
+    measurementControllers.clear();
+    addIngredient(); // Reset with one ingredient field
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    // Dispose all controllers to free memory
+    nameController.dispose();
+    categoryController.dispose();
+    areaController.dispose();
+    instructionsController.dispose();
+    thumbnailUrlController.dispose();
+    youtubeUrlController.dispose();
+
+    for (var controller in ingredientControllers) {
+      controller.dispose();
+    }
+    for (var controller in measurementControllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 }

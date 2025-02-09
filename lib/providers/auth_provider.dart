@@ -33,7 +33,6 @@ class AuthProvider with ChangeNotifier {
     }
     try {
       var user = await AuthService().signInWithEmailAndPassword(
-          context,
           emailTextEditingController.text.trim(),
           passwordTextEditingController.text.trim());
       emailTextEditingController.clear();
@@ -44,6 +43,29 @@ class AuthProvider with ChangeNotifier {
         MySnackbar.showSuccess(context, "Welcome to play world");
       }
       await userPro.addUser(user);
+    } catch (e) {
+      log("SigninError $e");
+    }
+  }
+
+  Future<void> googleSignIn(BuildContext context) async {
+    final userPro = Provider.of<UserProvider>(context, listen: false);
+    try {
+      var user = await AuthService().signInWithGoogle();
+
+      if (user.email == '') {
+        if (context.mounted) {
+          MySnackbar.showError(context, "No User Found, Sign Up First");
+        }
+        return;
+      }
+
+      await userPro.addUser(user);
+      if (context.mounted) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        MySnackbar.showSuccess(context, "Welcome to play world");
+      }
     } catch (e) {
       log("SigninError $e");
     }

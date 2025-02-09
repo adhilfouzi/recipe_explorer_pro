@@ -3,10 +3,11 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
+import '../../utils/constants/images.dart';
 import '../../utils/validators/validator.dart';
 import '../../utils/widget/button.dart';
 import '../../utils/widget/textfield.dart';
-import 'intro_appbar.dart';
+import 'widget/intro_appbar.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -30,7 +31,9 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 height: height * 0.3,
                 width: width,
-                child: Center(child: Text("ImagePath.logo")),
+                child: Center(
+                  child: Image.asset(Images.logo, height: height * 0.25),
+                ),
               ),
               MyTextField(
                 textInputAction: TextInputAction.next,
@@ -59,7 +62,13 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: height * 0.025),
               const Text('or'),
               SizedBox(height: height * 0.025),
-              Button().googleSignInButton(context, false),
+              Button().googleSignInButton(
+                context,
+                false,
+                () {
+                  authProvider.googleSignIn(context);
+                },
+              ),
               SizedBox(height: height * 0.02),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

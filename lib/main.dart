@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return MaterialApp(
-          title: 'Recipe Explorer Pro',
+          title: 'Chef Brand',
           debugShowCheckedModeBanner: false,
           theme: themeProvider.currentTheme,
           home: SplashScreen(),

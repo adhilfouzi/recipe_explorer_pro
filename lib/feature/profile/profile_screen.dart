@@ -4,6 +4,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../utils/constants/images.dart';
 import '../../utils/theme/theme_container.dart';
+import 'widget/profile_info_row.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -85,11 +86,13 @@ class ProfileScreen extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surface.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                          color: theme.colorScheme.surface.withOpacity(0.2)),
-                    ),
+                        color: theme.colorScheme.surface
+                            .withAlpha((0.1 * 255).toInt()),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: theme.colorScheme.surface
+                              .withAlpha((0.2 * 255).toInt()),
+                        )),
                     child: Column(
                       children: [
                         ProfileInfoRow(title: "Phone", value: user.number),
@@ -135,10 +138,12 @@ class ProfileScreen extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 30),
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.8),
+          color: color.withAlpha((0.8 * 255).toInt()),
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
-            BoxShadow(color: color.withOpacity(0.8)),
+            BoxShadow(
+              color: color.withAlpha((0.8 * 255).toInt()),
+            )
           ],
         ),
         child: Row(
@@ -156,34 +161,6 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-/// Reusable Profile Information Row
-class ProfileInfoRow extends StatelessWidget {
-  final String title, value;
-  const ProfileInfoRow({super.key, required this.title, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textColor = theme.textTheme.bodyLarge?.color ?? Colors.white;
-    final secondaryTextColor =
-        theme.textTheme.bodyMedium?.color ?? Colors.white70;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(title,
-              style: TextStyle(fontSize: 16, color: secondaryTextColor)),
-          Text(value,
-              style: TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold, color: textColor)),
-        ],
       ),
     );
   }

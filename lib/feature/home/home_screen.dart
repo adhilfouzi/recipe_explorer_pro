@@ -6,7 +6,7 @@ import '../../providers/recipe_provider.dart';
 import '../../utils/constants/images.dart';
 import '../../utils/constants/shimmer.dart';
 import '../../utils/theme/theme_container.dart';
-import '../account_screen.dart';
+import '../account/account_screen.dart';
 import 'widget/category_item.dart';
 import 'widget/recipe_item.dart';
 import 'widget/searchbar_widget.dart';
@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Cook Book",
+                                "Chef Brand",
                                 style: GoogleFonts.lato(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,

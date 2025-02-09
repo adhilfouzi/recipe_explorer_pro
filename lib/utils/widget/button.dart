@@ -13,7 +13,7 @@ class Button {
         borderRadius: BorderRadius.circular(13),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withAlpha((0.5 * 255).toInt()),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -47,7 +47,7 @@ class Button {
         borderRadius: BorderRadius.circular(13),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withAlpha((0.3 * 255).toInt()),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -64,7 +64,7 @@ class Button {
             borderRadius: BorderRadius.circular(999), // Button corner radius
           ),
           padding: const EdgeInsets.symmetric(vertical: 14),
-          shadowColor: MyColors.mainColor.withOpacity(0.5),
+          shadowColor: MyColors.mainColor.withAlpha((0.5 * 255).toInt()),
           elevation: 5,
         ),
         child: Text(text),
@@ -156,11 +156,10 @@ class Button {
     );
   }
 
-  Widget googleSignInButton(BuildContext context, bool isBlack) {
+  Widget googleSignInButton(
+      BuildContext context, bool isBlack, VoidCallback onPressed) {
     return ElevatedButton(
-      onPressed: () {
-        // SigninController().gooogleSignin();
-      },
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         foregroundColor: isBlack ? Colors.white : Colors.black,
         backgroundColor: isBlack ? Colors.black : Colors.white,

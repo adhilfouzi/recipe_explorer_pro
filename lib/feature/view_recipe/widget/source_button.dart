@@ -61,7 +61,7 @@ class RecipeButtons extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: colors.first.withOpacity(0.4),
+              color: colors.first.withAlpha((0.4 * 255).toInt()),
               blurRadius: 8,
               offset: const Offset(2, 4),
             ),
@@ -89,9 +89,7 @@ class RecipeButtons extends StatelessWidget {
   // Function to Open URLs
   void _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       debugPrint("Could not launch $url");
     }
   }

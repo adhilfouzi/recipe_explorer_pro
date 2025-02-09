@@ -7,6 +7,9 @@ class UserProvider extends ChangeNotifier {
 
   UserModel _user = UserModel.empty();
   UserModel get user => _user;
+  UserProvider() {
+    initUser();
+  }
 
   /// Initialize Hive and Load User Data
   Future<void> initUser() async {

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../utils/constants/images.dart';
 import '../../utils/validators/validator.dart';
 import '../../utils/widget/button.dart';
 import '../../utils/widget/textfield.dart';
-import 'intro_appbar.dart';
-import 'privacy_policy_checkbox.dart';
+import 'widget/intro_appbar.dart';
+import 'widget/privacy_policy_checkbox.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
@@ -27,7 +28,9 @@ class SignupScreen extends StatelessWidget {
                 SizedBox(
                   height: height * 0.3,
                   width: width,
-                  child: Center(child: Text("ImagePath.logo")),
+                  child: Center(
+                    child: Image.asset(Images.logo, height: height * 0.25),
+                  ),
                 ),
                 MyTextField(
                   hintText: "Full Name",

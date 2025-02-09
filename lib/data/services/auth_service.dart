@@ -1,13 +1,13 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../handle/firebase_exceptionhandler.dart';
 import '../models/user_model.dart';
 import 'user_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   User? get authUser => _auth.currentUser;
 
@@ -23,7 +23,7 @@ class AuthService {
   }
 
   Future<UserModel> signInWithEmailAndPassword(
-      BuildContext context, String email, String password) async {
+      String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -58,56 +58,29 @@ class AuthService {
     }
   }
 
-  // Future<void> signInWithGoogle() async {
-  //   try {
-  //     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-  //     if (googleUser == null) {
-  //       log("GoogleSignIn canceled by user");
-  //       Get.back();
-  //       return;
-  //     }
+  Future<UserModel> signInWithGoogle() async {
+    try {
+      await _googleSignIn.signOut();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        log("GoogleSignIn canceled by user");
+        // Get.back();
+        return UserModel.empty();
+      }
 
-  //     final GoogleSignInAuthentication googleAuth =
-  //         await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-  //     final AuthCredential credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken,
-  //       idToken: googleAuth.idToken,
-  //     );
+      final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-  //     UserCredential userCredential =
-  //         await _auth.signInWithCredential(credential);
+      UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
 
-  //     final user =
-  //         await UserRepository().fetchUserdetails(userCredential.user!.uid);
-
-  //     if (user.isUser) {
-  //       Get.offAll(() => const MyBottomNavigationBar());
-  //       await UserController().getUserRecord();
-  //       log("Google SignIn Success ");
-  //       MySnackbar.showSuccess("welcome to play world");
-  //     } else {
-  //       final newUser = UserModel(
-  //         id: userCredential.user!.uid,
-  //         name: userCredential.user!.displayName ?? 'N/A',
-  //         number: userCredential.user!.phoneNumber ?? 'N/A',
-  //         email: userCredential.user!.email ?? '',
-  //         profile: '',
-  //         isUser: true,
-  //       );
-  //       await UserRepository()
-  //           .saveUserRecord(newUser, userCredential.user!.uid);
-  //       await UserController().getUserRecord();
-
-  //       Get.offAll(() => const MyBottomNavigationBar());
-  //       MySnackbar.showSuccess("welcome to play world");
-  //       log("Google SignUp Success");
-  //     }
-  //   } catch (e) {
-  //     log("GoogleSignInError: $e");
-  //     Get.back();
-  //     MySnackbar.showError('Google Sign-In failed. Please try again.');
-  //     throw ExceptionHandler.handleException(e);
-  //   }
-  // }
+      return await UserService().fetchUserdetails(userCredential.user!.uid);
+    } catch (e) {
+      log("GoogleSignInError: $e");
+      throw ExceptionHandler.handleException(e);
+    }
+  }
 }
