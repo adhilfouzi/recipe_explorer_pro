@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/constants/colors.dart';
+import '../../../utils/constants/colors.dart';
 
 class IntroAppbar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;

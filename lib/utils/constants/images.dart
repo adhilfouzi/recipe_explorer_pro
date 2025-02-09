@@ -7,4 +7,5 @@ class Images {
   static const menu = "assets/icons/menu.png";
   static const arrow = "assets/icons/Arrow.png";
   static const profileIcon = "assets/icons/profileIcon.png";
+  static const logo = "assets/logo.png";
 }

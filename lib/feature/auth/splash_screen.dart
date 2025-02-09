@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../utils/constants/colors.dart';
+import '../../utils/constants/images.dart';
 import '../home/home_screen.dart';
 import 'login_screen.dart';
 
@@ -33,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: height),
-            Text("ImagePath.logo"),
+            Image.asset(Images.logo, width: height * 1.5),
             SizedBox(height: height),
             const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
