@@ -40,8 +40,8 @@ class CategoriesHead extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: CircleAvatar(
               backgroundColor: isDarkMode
-                  ? Colors.white.withOpacity(0.2)
-                  : Colors.black.withOpacity(0.5), // ✅ Dark mode friendly
+                  ? Colors.white.withAlpha((0.2 * 255).toInt())
+                  : Colors.black.withAlpha((0.5 * 255).toInt()),
               child: IconButton(
                 icon: Icon(Icons.arrow_back,
                     color: isDarkMode ? Colors.white : Colors.black),

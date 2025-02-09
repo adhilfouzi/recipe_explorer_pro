@@ -86,11 +86,13 @@ class ProfileScreen extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surface.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                          color: theme.colorScheme.surface.withOpacity(0.2)),
-                    ),
+                        color: theme.colorScheme.surface
+                            .withAlpha((0.1 * 255).toInt()),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: theme.colorScheme.surface
+                              .withAlpha((0.2 * 255).toInt()),
+                        )),
                     child: Column(
                       children: [
                         ProfileInfoRow(title: "Phone", value: user.number),
@@ -136,10 +138,12 @@ class ProfileScreen extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 30),
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.8),
+          color: color.withAlpha((0.8 * 255).toInt()),
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
-            BoxShadow(color: color.withOpacity(0.8)),
+            BoxShadow(
+              color: color.withAlpha((0.8 * 255).toInt()),
+            )
           ],
         ),
         child: Row(

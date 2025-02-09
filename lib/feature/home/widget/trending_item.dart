@@ -40,7 +40,7 @@ class TrendingItem extends StatelessWidget {
                 right: 0,
                 child: Container(
                   padding: const EdgeInsets.all(8),
-                  color: Colors.black.withOpacity(0.35),
+                  color: Colors.black.withAlpha((0.35 * 255).toInt()),
                   child: Text(
                     recipe.name,
                     style: GoogleFonts.lato(

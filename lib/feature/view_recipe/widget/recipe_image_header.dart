@@ -33,7 +33,7 @@ class RecipeImageHeader extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: CircleAvatar(
-              backgroundColor: Colors.black.withOpacity(0.5),
+              backgroundColor: Colors.black.withAlpha((0.5 * 255).toInt()),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () => Navigator.pop(context),

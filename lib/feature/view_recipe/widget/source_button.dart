@@ -61,7 +61,7 @@ class RecipeButtons extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: colors.first.withOpacity(0.4),
+              color: colors.first.withAlpha((0.4 * 255).toInt()),
               blurRadius: 8,
               offset: const Offset(2, 4),
             ),
