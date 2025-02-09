@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../theme/theme_container.dart';
+
 class ShimmerPlaceholder extends StatelessWidget {
   const ShimmerPlaceholder({super.key});
 
@@ -29,27 +31,29 @@ class HomeScreenShimmer extends StatelessWidget {
     final highlightColor = isDarkMode ? Colors.grey[500]! : Colors.grey[100]!;
     final bgColor = isDarkMode ? Colors.black : Colors.white;
 
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _shimmerText(150, 30, baseColor, highlightColor, bgColor),
-              const SizedBox(height: 8),
-              _shimmerText(200, 20, baseColor, highlightColor, bgColor),
-              const SizedBox(height: 16),
-              _shimmerSearchBar(baseColor, highlightColor, bgColor),
-              const SizedBox(height: 16),
-              _shimmerCategories(baseColor, highlightColor, bgColor),
-              const SizedBox(height: 20),
-              _shimmerText(100, 20, baseColor, highlightColor, bgColor),
-              const SizedBox(height: 10),
-              _shimmerTrendingRecipes(baseColor, highlightColor, bgColor),
-              const SizedBox(height: 16),
-              _shimmerRecipeList(baseColor, highlightColor, bgColor),
-            ],
+    return ThemeContainer(
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _shimmerText(150, 30, baseColor, highlightColor, bgColor),
+                const SizedBox(height: 8),
+                _shimmerText(200, 20, baseColor, highlightColor, bgColor),
+                const SizedBox(height: 16),
+                _shimmerSearchBar(baseColor, highlightColor, bgColor),
+                const SizedBox(height: 16),
+                _shimmerCategories(baseColor, highlightColor, bgColor),
+                const SizedBox(height: 20),
+                _shimmerText(100, 20, baseColor, highlightColor, bgColor),
+                const SizedBox(height: 10),
+                _shimmerTrendingRecipes(baseColor, highlightColor, bgColor),
+                const SizedBox(height: 16),
+                _shimmerRecipeList(baseColor, highlightColor, bgColor),
+              ],
+            ),
           ),
         ),
       ),
