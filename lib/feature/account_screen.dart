@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/theme_provider.dart';
+import '../providers/user_provider.dart';
+import '../utils/constants/images.dart';
 import '../utils/theme/theme_container.dart';
 import '../version_screen.dart';
 import 'app_theme/app_theme_screen.dart';
 import 'favorite/favorite_screen.dart';
+import 'my_recipe/my_recipe_screen.dart';
+import 'profile/profile_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -14,6 +18,7 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDarkMode = themeProvider.isDarkMode;
+    final user = Provider.of<UserProvider>(context).user;
 
     return Scaffold(
       body: ThemeContainer(
@@ -32,12 +37,14 @@ class AccountScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage('assets/profile/A1.png'),
+                  radius: 60,
+                  backgroundImage: user.profile.isEmpty
+                      ? AssetImage(Images.avatar)
+                      : AssetImage(user.profile),
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "Adhil Fouzi K",
+                  user.name,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -45,12 +52,16 @@ class AccountScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                _buildSettingsOption(
+                SettingsOption(
                   title: "Profile",
                   icon: Icons.person,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    );
+                  },
                 ),
-                _buildSettingsOption(
+                SettingsOption(
                   title: "App Theme",
                   icon: Icons.dark_mode,
                   onTap: () {
@@ -64,12 +75,16 @@ class AccountScreen extends StatelessWidget {
                     onChanged: (value) => themeProvider.toggleTheme(),
                   ),
                 ),
-                _buildSettingsOption(
+                SettingsOption(
                   title: "My Recipe",
                   icon: Icons.book,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => MyRecipeScreen()),
+                    );
+                  },
                 ),
-                _buildSettingsOption(
+                SettingsOption(
                   title: "Favorite Recipe",
                   icon: Icons.favorite,
                   onTap: () {
@@ -86,13 +101,24 @@ class AccountScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildSettingsOption({
-    required String title,
-    required IconData icon,
-    Widget? trailing,
-    VoidCallback? onTap,
-  }) {
+class SettingsOption extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+
+  const SettingsOption({
+    required this.title,
+    required this.icon,
+    this.trailing,
+    this.onTap,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 4,

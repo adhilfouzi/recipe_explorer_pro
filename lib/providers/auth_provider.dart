@@ -2,13 +2,16 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import '../data/models/user_model.dart';
 import '../data/services/auth_service.dart';
 import '../data/services/user_service.dart';
 import '../feature/auth/login_screen.dart';
 import '../feature/home/home_screen.dart';
+import '../utils/constants/images.dart';
 import '../utils/constants/snackbar.dart';
+import 'user_provider.dart';
 
 class AuthProvider with ChangeNotifier {
   final GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
@@ -22,28 +25,27 @@ class AuthProvider with ChangeNotifier {
   final passwordTextEditingController = TextEditingController();
 
   Future<void> signIn(BuildContext context) async {
+    final userPro = Provider.of<UserProvider>(context, listen: false);
     if (emailTextEditingController.text.isEmpty ||
         passwordTextEditingController.text.isEmpty) {
       MySnackbar.showError(context, "Please fill all the fields");
       return;
     }
     try {
-      await AuthService().signInWithEmailAndPassword(
+      var user = await AuthService().signInWithEmailAndPassword(
           context,
           emailTextEditingController.text.trim(),
           passwordTextEditingController.text.trim());
+      emailTextEditingController.clear();
+      passwordTextEditingController.clear();
       if (context.mounted) {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => HomeScreen()));
         MySnackbar.showSuccess(context, "Welcome to play world");
       }
-      emailTextEditingController.clear();
-      passwordTextEditingController.clear();
+      await userPro.addUser(user);
     } catch (e) {
-      if (context.mounted) {
-        MySnackbar.showError(context, e.toString());
-      }
-      log("SigninError");
+      log("SigninError $e");
     }
   }
 
@@ -64,6 +66,8 @@ class AuthProvider with ChangeNotifier {
 
   void signup(BuildContext context) async {
     if (!signupFormKey.currentState!.validate()) return;
+    final userPro = Provider.of<UserProvider>(context, listen: false);
+
     signupFormKey.currentState!.save();
     log("signup isChecked: $_isChecked");
     try {
@@ -80,9 +84,13 @@ class AuthProvider with ChangeNotifier {
         name: fullNameText.text.trim(),
         number: phoneNumberText.text.trim(),
         email: emailText.text.trim(),
-        profile: '',
+        profile: Images.avatar,
       );
       await UserService().saveUserRecord(user, userCredential.user!.uid);
+
+      // Add user data to UserProvider
+      await userPro.addUser(user);
+
       if (context.mounted) {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => HomeScreen()));
@@ -100,13 +108,16 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  void signOut(BuildContext context) {
+  void signOut(BuildContext context) async {
+    final userPro = Provider.of<UserProvider>(context, listen: false);
+
     _auth.signOut();
     _user = null;
     if (context.mounted) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => LoginScreen()));
     }
+    await userPro.logoutUser();
     notifyListeners();
   }
 }

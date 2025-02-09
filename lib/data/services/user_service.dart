@@ -33,7 +33,7 @@ class UserService {
         return UserModel.fromSnapshot(snapshot);
       } else {
         // Return an empty user model if the document does not exist
-        return UserModel.emptyUserModel();
+        return UserModel.empty();
       }
     } catch (e) {
       // Handle any exceptions that occur
@@ -52,7 +52,7 @@ class UserService {
         return UserModel.fromSnapshot(snapshot);
       } else {
         // Return an empty user model if the document does not exist
-        return UserModel.emptyUserModel();
+        return UserModel.empty();
       }
     } catch (e) {
       // Handle any exceptions that occur

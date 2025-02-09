@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                             const SizedBox(height: 16),
 
                             // Trending Section
-                            if (recipeProvider.recipes.isNotEmpty)
+                            if (trending.isNotEmpty)
                               Text(
                                 "Trending",
                                 style: GoogleFonts.lato(

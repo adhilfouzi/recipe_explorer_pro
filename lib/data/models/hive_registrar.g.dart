@@ -5,10 +5,12 @@
 import 'package:hive_ce/hive.dart';
 import 'package:recipe_explorer_pro/data/models/category_model.dart';
 import 'package:recipe_explorer_pro/data/models/recipe_model.dart';
+import 'package:recipe_explorer_pro/data/models/user_model.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
     registerAdapter(CategoryModelAdapter());
     registerAdapter(RecipeModelAdapter());
+    registerAdapter(UserModelAdapter());
   }
 }

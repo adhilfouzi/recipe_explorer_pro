@@ -1,12 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive_ce/hive.dart';
 
-/// Model class representing a user.
+part 'user_model.g.dart';
+
+@HiveType(typeId: 2)
 class UserModel {
-  final String? id;
-  final String name;
-  final String number;
-  final String email;
-  final String profile;
+  @HiveField(0)
+  String? id;
+
+  @HiveField(1)
+  String name;
+
+  @HiveField(2)
+  String number;
+
+  @HiveField(3)
+  String email;
+
+  @HiveField(4)
+  String profile;
 
   /// Constructor for UserModel.
   UserModel({
@@ -29,7 +41,7 @@ class UserModel {
   }
 
   /// Factory method to create an empty UserModel instance.
-  factory UserModel.emptyUserModel() {
+  factory UserModel.empty() {
     return UserModel(
       id: '',
       name: '',

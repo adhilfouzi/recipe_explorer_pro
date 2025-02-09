@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import '../handle/firebase_exceptionhandler.dart';
+import '../models/user_model.dart';
 import 'user_service.dart';
 
 class AuthService {
@@ -21,7 +22,7 @@ class AuthService {
     }
   }
 
-  Future<void> signInWithEmailAndPassword(
+  Future<UserModel> signInWithEmailAndPassword(
       BuildContext context, String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -29,17 +30,11 @@ class AuthService {
         password: password,
       );
 
-      await UserService()
+      return await UserService()
           .fetchUserdetails(userCredential.user!.uid)
           .whenComplete(() {
         log("fetch User details");
       });
-
-      // if (user.isUser) {
-      //   // Navigate to the bottom navigation bar widget
-      //   // Get.offAll(() => const MyBottomNavigationBar());
-      //   log("SigninSuccess");
-      // } else {}
     } catch (e) {
       throw ExceptionHandler.handleException(e);
     }
