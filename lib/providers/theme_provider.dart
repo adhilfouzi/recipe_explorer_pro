@@ -19,6 +19,8 @@ class ThemeProvider with ChangeNotifier {
   ThemeData get currentTheme => _isDarkMode ? _darkTheme : _lightTheme;
   // 🎨 Light Theme
   static final ThemeData _lightTheme = ThemeData(
+    useMaterial3: true,
+    fontFamily: 'Poppins',
     brightness: Brightness.light,
     primaryColor: LightThemeColors.primary,
     scaffoldBackgroundColor: LightThemeColors.background,
@@ -36,6 +38,8 @@ class ThemeProvider with ChangeNotifier {
 
   // 🌙 Dark Theme
   static final ThemeData _darkTheme = ThemeData(
+    useMaterial3: true,
+    fontFamily: 'Poppins',
     brightness: Brightness.dark,
     primaryColor: DarkThemeColors.primary,
     scaffoldBackgroundColor: DarkThemeColors.background,
