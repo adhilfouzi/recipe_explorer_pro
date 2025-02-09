@@ -44,28 +44,30 @@ class RecipeItem extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          recipe.name,
-                          style: GoogleFonts.lato(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            recipe.name,
+                            style: GoogleFonts.lato(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          {recipe.area, recipe.category}
-                              .where((e) => e.isNotEmpty)
-                              .join(' | '),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.lato(
-                              fontSize: 14, color: Colors.grey),
-                        ),
-                      ],
+                          const SizedBox(height: 4),
+                          Text(
+                            {recipe.area, recipe.category}
+                                .where((e) => e.isNotEmpty)
+                                .join(' | '),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.lato(
+                                fontSize: 14, color: Colors.grey),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
