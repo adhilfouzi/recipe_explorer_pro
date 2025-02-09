@@ -25,6 +25,8 @@ class RecipeModel extends HiveObject {
   final String? source;
   @HiveField(10)
   final bool isFavorite;
+  @HiveField(11)
+  final bool isItMine;
 
   RecipeModel({
     required this.id,
@@ -38,6 +40,7 @@ class RecipeModel extends HiveObject {
     required this.measurements,
     this.source,
     this.isFavorite = false,
+    this.isItMine = false,
   });
 
   factory RecipeModel.fromJson(Map<String, dynamic> json) {
@@ -68,7 +71,34 @@ class RecipeModel extends HiveObject {
         ingredients: extractedIngredients,
         measurements: extractedMeasurements,
         source: json['strSource'],
-        isFavorite: false);
+        isFavorite: false,
+        isItMine: false);
+  }
+  factory RecipeModel.createOwnRecipe({
+    required String name,
+    required String category,
+    required String area,
+    required String instructions,
+    required String thumbnailUrl,
+    required String youtubeUrl,
+    required List<String> ingredients,
+    required List<String> measurements,
+    String? source,
+  }) {
+    return RecipeModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      name: name,
+      category: category,
+      area: area,
+      instructions: instructions,
+      thumbnailUrl: thumbnailUrl,
+      youtubeUrl: youtubeUrl,
+      ingredients: ingredients,
+      measurements: measurements,
+      source: source,
+      isFavorite: false,
+      isItMine: true,
+    );
   }
 
   factory RecipeModel.empty() {
@@ -84,6 +114,7 @@ class RecipeModel extends HiveObject {
       measurements: [],
       source: null,
       isFavorite: false,
+      isItMine: false,
     );
   }
 }
