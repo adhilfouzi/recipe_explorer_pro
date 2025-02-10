@@ -35,16 +35,23 @@ class AuthProvider with ChangeNotifier {
       var user = await AuthService().signInWithEmailAndPassword(
           emailTextEditingController.text.trim(),
           passwordTextEditingController.text.trim());
-      emailTextEditingController.clear();
-      passwordTextEditingController.clear();
+
+      if (user.email == '') {
+        if (context.mounted) {
+          MySnackbar.showError(context, "No User Found, Sign Up First");
+        }
+        return;
+      }
+
       if (context.mounted) {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => HomeScreen()));
-        MySnackbar.showSuccess(context, "Welcome to play world");
       }
+      emailTextEditingController.clear();
+      passwordTextEditingController.clear();
       await userPro.addUser(user);
-    } catch (e) {
-      log("SigninError $e");
+    } catch (e, s) {
+      log("SigninError $e :- $s");
     }
   }
 

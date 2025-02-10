@@ -30,13 +30,10 @@ class AuthService {
         password: password,
       );
 
-      return await UserService()
-          .fetchUserdetails(userCredential.user!.uid)
-          .whenComplete(() {
-        log("fetch User details");
-      });
+      return await UserService().fetchUserdetails(userCredential.user!.uid);
     } catch (e) {
-      throw ExceptionHandler.handleException(e);
+      log(ExceptionHandler.handleException(e));
+      return UserModel.empty();
     }
   }
 

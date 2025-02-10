@@ -51,6 +51,7 @@ class UserService {
       if (snapshot.exists) {
         return UserModel.fromSnapshot(snapshot);
       } else {
+        log('Empty User');
         // Return an empty user model if the document does not exist
         return UserModel.empty();
       }
