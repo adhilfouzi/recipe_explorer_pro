@@ -55,29 +55,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> googleSignIn(BuildContext context) async {
-    final userPro = Provider.of<UserProvider>(context, listen: false);
-    try {
-      var user = await AuthService().signInWithGoogle();
-
-      if (user.email == '') {
-        if (context.mounted) {
-          MySnackbar.showError(context, "No User Found, Sign Up First");
-        }
-        return;
-      }
-
-      await userPro.addUser(user);
-      if (context.mounted) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
-        MySnackbar.showSuccess(context, "Welcome to Chaf Brand");
-      }
-    } catch (e) {
-      log("SigninError $e");
-    }
-  }
-
   final fullNameText = TextEditingController();
   final phoneNumberText = TextEditingController();
   final emailText = TextEditingController();

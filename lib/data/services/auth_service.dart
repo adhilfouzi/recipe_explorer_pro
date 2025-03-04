@@ -1,13 +1,11 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../handle/firebase_exceptionhandler.dart';
 import '../models/user_model.dart';
 import 'user_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   User? get authUser => _auth.currentUser;
 
@@ -51,32 +49,6 @@ class AuthService {
       await _auth.signOut();
       // await _googleSignIn.signOut();
     } catch (e) {
-      throw ExceptionHandler.handleException(e);
-    }
-  }
-
-  Future<UserModel> signInWithGoogle() async {
-    try {
-      await _googleSignIn.signOut();
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        log("GoogleSignIn canceled by user");
-        // Get.back();
-        return UserModel.empty();
-      }
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-
-      UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-
-      return await UserService().fetchUserdetails(userCredential.user!.uid);
-    } catch (e) {
-      log("GoogleSignInError: $e");
       throw ExceptionHandler.handleException(e);
     }
   }

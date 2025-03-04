@@ -59,17 +59,7 @@ class LoginScreen extends StatelessWidget {
 
                 authProvider.signIn(context);
               }),
-              SizedBox(height: height * 0.025),
-              const Text('or'),
-              SizedBox(height: height * 0.025),
-              Button().googleSignInButton(
-                context,
-                false,
-                () {
-                  authProvider.googleSignIn(context);
-                },
-              ),
-              SizedBox(height: height * 0.02),
+              SizedBox(height: height * 0.1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
