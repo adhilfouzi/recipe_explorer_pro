@@ -71,7 +71,7 @@ class AuthProvider with ChangeNotifier {
       if (context.mounted) {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => HomeScreen()));
-        MySnackbar.showSuccess(context, "Welcome to play world");
+        MySnackbar.showSuccess(context, "Welcome to Chaf Brand");
       }
     } catch (e) {
       log("SigninError $e");
