@@ -8,8 +8,8 @@ import '../../utils/widget/button.dart';
 import '../../utils/widget/textfield.dart';
 import 'widget/intro_appbar.dart';
 
-class EmailVerificationScreen extends StatelessWidget {
-  const EmailVerificationScreen({super.key});
+class EmailVerifiScreen extends StatelessWidget {
+  const EmailVerifiScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

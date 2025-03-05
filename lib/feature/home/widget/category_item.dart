@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/models/category_model.dart';
 import '../../../utils/constants/shimmer.dart';
-import '../../categories/categories_screen.dart';
+import '../../../utils/routes/app_routes.dart';
 
 class CategoryItem extends StatelessWidget {
   final CategoryModel category;
@@ -17,8 +17,7 @@ class CategoryItem extends StatelessWidget {
       padding: const EdgeInsets.only(right: 10),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => CategoriesScreen(category: category)));
+          Navigator.pushNamed(context, AppRoutes.category, arguments: category);
         },
         child: Column(
           children: [

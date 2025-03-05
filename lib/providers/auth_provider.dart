@@ -7,11 +7,9 @@ import 'package:provider/provider.dart';
 import '../data/models/user_model.dart';
 import '../data/services/auth_service.dart';
 import '../data/services/user_service.dart';
-import '../feature/auth/login_screen.dart';
-import '../feature/auth/sentemail_screen.dart';
-import '../feature/home/home_screen.dart';
 import '../utils/constants/images.dart';
 import '../utils/constants/snackbar.dart';
+import '../utils/routes/app_routes.dart';
 import 'user_provider.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -45,9 +43,7 @@ class AuthProvider with ChangeNotifier {
       }
 
       if (context.mounted) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (route) => false);
+        Navigator.pushNamed(context, AppRoutes.home);
       }
       await userPro.addUser(user);
     } catch (e, s) {
@@ -105,9 +101,7 @@ class AuthProvider with ChangeNotifier {
       await userPro.addUser(user);
 
       if (context.mounted) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (route) => false);
+        Navigator.pushNamed(context, AppRoutes.home);
       }
 
       fullNameText.clear();
@@ -129,9 +123,7 @@ class AuthProvider with ChangeNotifier {
     _user = null;
 
     if (context.mounted) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-          (route) => false);
+      Navigator.pushNamed(context, AppRoutes.login);
     }
     await userPro.logoutUser();
     notifyListeners();
@@ -142,31 +134,11 @@ class AuthProvider with ChangeNotifier {
       String email = emailTextEditingController.text.trim();
       await AuthService().sendPasswordResetEmail(email);
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const SentEmailScreen(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              const begin = Offset(1.0, 0.0);
-              const end = Offset.zero;
-              const curve = Curves.ease;
-
-              var tween =
-                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-              var offsetAnimation = animation.drive(tween);
-
-              return SlideTransition(
-                position: offsetAnimation,
-                child: child,
-              );
-            },
-          ),
-        );
+        Navigator.pushNamed(context, AppRoutes.password);
       }
     } catch (e) {
       if (context.mounted) {
-        Navigator.of(context).pop();
+        Navigator.pop(context);
         log("Error request EmailVerification: $e");
         MySnackbar.showError(context, "Try again later");
       }

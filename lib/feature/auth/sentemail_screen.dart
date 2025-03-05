@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/auth_provider.dart';
+import '../../utils/routes/app_routes.dart';
 import '../../utils/widget/button.dart';
-import 'login_screen.dart';
 
-class SentEmailScreen extends StatelessWidget {
-  const SentEmailScreen({super.key});
+class PasswordResetEmailScreen extends StatelessWidget {
+  const PasswordResetEmailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +47,7 @@ class SentEmailScreen extends StatelessWidget {
                     Button().mainButton(
                       'Done',
                       context,
-                      () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
-                            (route) => false);
-                      },
+                      () => Navigator.pushNamed(context, AppRoutes.login),
                     ),
                     const SizedBox(height: 16),
                     TextButton(

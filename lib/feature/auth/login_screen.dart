@@ -4,12 +4,11 @@ import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
 import '../../utils/constants/images.dart';
+import '../../utils/routes/app_routes.dart';
 import '../../utils/validators/validator.dart';
 import '../../utils/widget/button.dart';
 import '../../utils/widget/textfield.dart';
-import 'emailverification.dart';
 import 'widget/intro_appbar.dart';
-import 'signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -50,11 +49,8 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: height * 0.06),
               TextButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const EmailVerificationScreen(),
-                  ),
-                ),
+                onPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.emailVerification),
                 child: const Text("Forget password"),
               ),
               Button().mainButton('Log in', context, () {
@@ -69,11 +65,7 @@ class LoginScreen extends StatelessWidget {
                   const Text('Don’t have an account? '),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const SignupScreen(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, AppRoutes.signup);
                     },
                     child: const Text('Sign up'),
                   ),

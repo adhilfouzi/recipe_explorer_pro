@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/models/recipe_model.dart';
 import '../../../utils/constants/shimmer.dart';
-import '../../view_recipe/view_recipe_screen.dart';
+import '../../../utils/routes/app_routes.dart';
 
 class TrendingItem extends StatelessWidget {
   final RecipeModel recipe;
@@ -18,8 +18,7 @@ class TrendingItem extends StatelessWidget {
       padding: const EdgeInsets.only(right: 12),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ViewRecipeScreen(recipe: recipe)));
+          Navigator.pushNamed(context, AppRoutes.recipes, arguments: recipe);
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16),

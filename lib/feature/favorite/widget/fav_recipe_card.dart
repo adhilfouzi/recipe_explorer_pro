@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../data/models/recipe_model.dart';
-import '../../view_recipe/view_recipe_screen.dart';
+import '../../../utils/routes/app_routes.dart';
 
 class RecipeCard extends StatelessWidget {
   final RecipeModel recipe;
@@ -15,10 +15,7 @@ class RecipeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => ViewRecipeScreen(recipe: recipe)),
-        );
+        Navigator.pushNamed(context, AppRoutes.recipes, arguments: recipe);
       },
       child: Card(
         elevation: 6,
