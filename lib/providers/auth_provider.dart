@@ -8,6 +8,7 @@ import '../data/models/user_model.dart';
 import '../data/services/auth_service.dart';
 import '../data/services/user_service.dart';
 import '../feature/auth/login_screen.dart';
+import '../feature/auth/sentemail_screen.dart';
 import '../feature/home/home_screen.dart';
 import '../utils/constants/images.dart';
 import '../utils/constants/snackbar.dart';
@@ -38,20 +39,26 @@ class AuthProvider with ChangeNotifier {
 
       if (user.email == '') {
         if (context.mounted) {
-          MySnackbar.showError(context, "No User Found, Sign Up First");
+          MySnackbar.showError(context, "please verify your email");
         }
         return;
       }
 
       if (context.mounted) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (route) => false);
       }
-      emailTextEditingController.clear();
-      passwordTextEditingController.clear();
       await userPro.addUser(user);
     } catch (e, s) {
+      if (context.mounted) {
+        MySnackbar.showError(context, "Invalid email or password");
+      }
       log("SigninError $e :- $s");
+    } finally {
+      emailTextEditingController.clear();
+      passwordTextEditingController.clear();
+      notifyListeners();
     }
   }
 
@@ -98,8 +105,9 @@ class AuthProvider with ChangeNotifier {
       await userPro.addUser(user);
 
       if (context.mounted) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (route) => false);
       }
 
       fullNameText.clear();
@@ -119,11 +127,49 @@ class AuthProvider with ChangeNotifier {
 
     _auth.signOut();
     _user = null;
+
     if (context.mounted) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false);
     }
     await userPro.logoutUser();
     notifyListeners();
+  }
+
+  void requestEmailVerification(BuildContext context) async {
+    try {
+      String email = emailTextEditingController.text.trim();
+      await AuthService().sendPasswordResetEmail(email);
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const SentEmailScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.ease;
+
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            },
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        log("Error request EmailVerification: $e");
+        MySnackbar.showError(context, "Try again later");
+      }
+    }
   }
 }

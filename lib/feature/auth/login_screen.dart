@@ -7,6 +7,7 @@ import '../../utils/constants/images.dart';
 import '../../utils/validators/validator.dart';
 import '../../utils/widget/button.dart';
 import '../../utils/widget/textfield.dart';
+import 'emailverification.dart';
 import 'widget/intro_appbar.dart';
 import 'signup_screen.dart';
 
@@ -49,9 +50,11 @@ class LoginScreen extends StatelessWidget {
               ),
               SizedBox(height: height * 0.06),
               TextButton(
-                onPressed: () {
-                  // Get.to(() => EmailVerificationScreen());
-                },
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const EmailVerificationScreen(),
+                  ),
+                ),
                 child: const Text("Forget password"),
               ),
               Button().mainButton('Log in', context, () {
