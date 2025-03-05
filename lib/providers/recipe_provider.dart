@@ -47,8 +47,8 @@ class RecipeProvider with ChangeNotifier {
     notifyListeners();
     _recipeBox = await Hive.openBox<RecipeModel>('recipes');
     _categoryBox = await Hive.openBox<CategoryModel>('categories');
-    await fetchAll();
     isLoading = false;
+    await fetchAll();
     notifyListeners();
   }
 
@@ -298,10 +298,6 @@ class RecipeProvider with ChangeNotifier {
   List<TextEditingController> get measurementControllers =>
       _measurementControllers;
   int get ingredientsCount => _ingredientControllers.length;
-
-  // RecipeProvider() {
-  //   addIngredient(); // Start with one default ingredient field
-  // }
 
   // Add a new ingredient and measurement field
   void addIngredient() {

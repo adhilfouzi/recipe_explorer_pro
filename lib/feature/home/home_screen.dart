@@ -97,10 +97,9 @@ class HomeScreen extends StatelessWidget {
                                   },
                                 ),
                               ),
-                            const SizedBox(height: 16),
 
-                            // Trending Section
-                            if (trending.isNotEmpty)
+                            if (trending.isNotEmpty) ...[
+                              // Trending Section
                               Text(
                                 "Trending",
                                 style: GoogleFonts.lato(
@@ -109,10 +108,9 @@ class HomeScreen extends StatelessWidget {
                                   color: theme.textTheme.bodyLarge!.color,
                                 ),
                               ),
-                            const SizedBox(height: 12),
+                              const SizedBox(height: 12),
 
-                            // Trending List
-                            if (trending.isNotEmpty)
+                              // Trending List
                               SizedBox(
                                 height: 180,
                                 child: ListView.builder(
@@ -124,7 +122,8 @@ class HomeScreen extends StatelessWidget {
                                   },
                                 ),
                               ),
-                            const SizedBox(height: 16),
+                              const SizedBox(height: 16),
+                            ],
                           ],
 
                           // Recipe List (Filtered by Search)
