@@ -61,7 +61,6 @@ class AuthProvider with ChangeNotifier {
   final fullNameText = TextEditingController();
   final phoneNumberText = TextEditingController();
   final emailText = TextEditingController();
-  final dobText = TextEditingController();
   final passwordText = TextEditingController();
   bool _isChecked = false;
 
@@ -107,7 +106,6 @@ class AuthProvider with ChangeNotifier {
       fullNameText.clear();
       phoneNumberText.clear();
       emailText.clear();
-      dobText.clear();
       passwordText.clear();
       isChecked = false;
       signupFormKey.currentState!.reset();
@@ -123,7 +121,8 @@ class AuthProvider with ChangeNotifier {
     _user = null;
 
     if (context.mounted) {
-      Navigator.pushNamed(context, AppRoutes.login);
+      Navigator.pushNamedAndRemoveUntil(
+          context, AppRoutes.login, (route) => false);
     }
     await userPro.logoutUser();
     notifyListeners();

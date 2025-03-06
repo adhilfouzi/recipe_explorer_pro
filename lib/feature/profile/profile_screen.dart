@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../utils/constants/images.dart';
+import '../../utils/routes/app_routes.dart';
 import '../../utils/theme/theme_container.dart';
 import 'widget/profile_info_row.dart';
 
@@ -104,6 +105,15 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Buttons
+                  const SizedBox(height: 10),
+
+                  _glassButton(
+                    icon: Icons.edit,
+                    label: "Edit Profile",
+                    onPressed: () =>
+                        Navigator.pushNamed(context, AppRoutes.editProfile),
+                    color: Colors.blue,
+                  ),
                   const SizedBox(height: 10),
                   _glassButton(
                     icon: Icons.logout,

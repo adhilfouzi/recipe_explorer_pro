@@ -13,6 +13,7 @@ import '../../feature/favorite/favorite_screen.dart';
 import '../../feature/home/home_screen.dart';
 import '../../feature/my_recipe/add_own_recipe_screen.dart';
 import '../../feature/my_recipe/my_recipe_screen.dart';
+import '../../feature/profile/edit_profile.dart';
 import '../../feature/profile/profile_screen.dart';
 import '../../feature/view_recipe/view_recipe_screen.dart';
 
@@ -36,6 +37,7 @@ class AppRoutes {
   static const String category = '/category';
 
   static const String profile = '/profile';
+  static const String editProfile = '/edit-profile';
   // static const String settings = '/settings';
   static const String themeScreen = '/app-theme-screen';
   static const String account = '/account-screen';
@@ -52,6 +54,7 @@ class AppRoutes {
 
     account: (context) => const AccountScreen(),
     profile: (context) => const ProfileScreen(),
+    editProfile: (context) => const EditProfile(),
     addRecipe: (context) => const AddOwnRecipeScreen(),
     myRecipe: (context) => const MyRecipeScreen(),
     favorites: (context) => const FavoriteScreen(),

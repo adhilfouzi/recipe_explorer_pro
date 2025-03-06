@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/constants/colors.dart';
+import '../../../utils/widget/back_button.dart';
 
 class IntroAppbar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
@@ -25,7 +26,7 @@ class IntroAppbar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: leading == null,
-      leading: leading,
+      leading: leading ?? MyBackButton(),
       centerTitle: true,
       foregroundColor: textcolor ?? Colors.black,
       backgroundColor: Colors.transparent,
