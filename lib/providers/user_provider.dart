@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import '../data/models/user_model.dart';
 import '../data/services/user_service.dart';
+import '../utils/constants/images.dart';
 
 class UserProvider extends ChangeNotifier {
   static const String _boxName = "userBox";
+  var avatarList = <String>[];
 
   UserModel _user = UserModel.empty();
   UserModel get user => _user;
@@ -14,6 +16,7 @@ class UserProvider extends ChangeNotifier {
 
   final fullNameText = TextEditingController();
   final phoneNumberText = TextEditingController();
+  String profileText = '';
 
   /// Initialize Hive and Load User Data
   Future<void> initUser() async {
@@ -21,6 +24,8 @@ class UserProvider extends ChangeNotifier {
     _user = box.get('user', defaultValue: UserModel.empty())!;
     fullNameText.text = _user.name;
     phoneNumberText.text = _user.number;
+    profileText = _user.profile;
+    avatarList = Images.profile;
     notifyListeners();
   }
 
@@ -30,7 +35,7 @@ class UserProvider extends ChangeNotifier {
       name: fullNameText.text,
       number: phoneNumberText.text,
       email: _user.email,
-      profile: _user.profile,
+      profile: profileText,
     );
     var box = await Hive.openBox<UserModel>(_boxName);
     await box.put('user', updatedUser);
@@ -52,6 +57,11 @@ class UserProvider extends ChangeNotifier {
     var box = await Hive.openBox<UserModel>(_boxName);
     await box.put('user', newUser);
     _user = newUser;
+    notifyListeners();
+  }
+
+  void changeProfile(int index) {
+    profileText = avatarList[index];
     notifyListeners();
   }
 }

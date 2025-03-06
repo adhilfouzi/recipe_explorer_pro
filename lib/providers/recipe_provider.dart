@@ -58,7 +58,7 @@ class RecipeProvider with ChangeNotifier {
     } else {
       _category = _categoryBox.values.toList();
       _recipes.addAll(_recipeBox.values);
-      await fetchRecipesCategories();
+      if (_recipeBox.length < 250) await fetchRecipesCategories();
       _selectTrendingRecipes();
     }
     notifyListeners();
