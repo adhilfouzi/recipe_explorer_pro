@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:recipe_explorer_pro/data/models/recipe_model.dart';
 
-import '../../../providers/recipe_provider.dart';
 import '../../../utils/http/url_launcher_service.dart';
 import 'display_button.dart';
 
@@ -16,7 +14,6 @@ class RecipeButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recipeProvider = Provider.of<RecipeProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       child: Column(
@@ -62,8 +59,7 @@ class RecipeButtons extends StatelessWidget {
                 ),
                 Expanded(
                   child: DisplayButton(
-                    onTap: () =>
-                        recipeProvider.deleteRecipe(recipe.id, context),
+                    onTap: () {},
                     icon: Icons.delete,
                     text: "Delete Recipe",
                     colors: [Colors.red.shade800, Colors.red.shade600],
