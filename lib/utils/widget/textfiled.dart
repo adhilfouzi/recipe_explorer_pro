@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String hintText;
+  final void Function(String)? onChanged;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final String? Function(String?)? validator;
@@ -17,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.textInputAction,
     this.validator,
     this.maxLines,
+    this.onChanged,
   });
 
   @override
@@ -31,6 +33,7 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextFormField(
+            onChanged: onChanged,
             controller: controller,
             keyboardType: keyboardType,
             validator: validator,

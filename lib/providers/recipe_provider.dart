@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import '../data/models/category_model.dart';
 import '../data/models/recipe_model.dart';
+import '../utils/constants/snackbar.dart';
 import '../utils/http/common_site.dart';
 import '../utils/http/http_service.dart';
 
@@ -199,6 +200,7 @@ class RecipeProvider with ChangeNotifier {
         measurements: _recipes[recipeIndex].measurements,
         source: _recipes[recipeIndex].source,
         isFavorite: !_recipes[recipeIndex].isFavorite,
+        isItMine: _recipes[recipeIndex].isItMine,
       );
       _recipeBox.put(id, _recipes[recipeIndex]);
       if (_recipes[recipeIndex].isFavorite) {
@@ -243,6 +245,11 @@ class RecipeProvider with ChangeNotifier {
   final TextEditingController instructionsController = TextEditingController();
   final TextEditingController thumbnailUrlController = TextEditingController();
   final TextEditingController youtubeUrlController = TextEditingController();
+  TextEditingController get imageController => thumbnailUrlController;
+
+  void updateImageController() {
+    notifyListeners();
+  }
 
   Future<void> addRecipe(BuildContext context) async {
     try {
@@ -253,10 +260,9 @@ class RecipeProvider with ChangeNotifier {
           thumbnailUrlController.text.isEmpty ||
           ingredientControllers.any((controller) => controller.text.isEmpty) ||
           measurementControllers.any((controller) => controller.text.isEmpty)) {
-        developer.log('Please fill all the fields');
+        MySnackbar.showError(context, 'Please fill all the fields');
         return;
       }
-      developer.log(' fill all the fields');
       var recipe = RecipeModel(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
           name: nameController.text,

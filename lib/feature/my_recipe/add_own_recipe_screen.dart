@@ -4,6 +4,7 @@ import 'package:recipe_explorer_pro/providers/recipe_provider.dart';
 import '../../providers/theme_provider.dart';
 import '../../utils/theme/theme_container.dart';
 import '../../utils/widget/textfiled.dart';
+import 'image_display_widget.dart';
 
 class AddOwnRecipeScreen extends StatelessWidget {
   const AddOwnRecipeScreen({super.key});
@@ -38,6 +39,12 @@ class AddOwnRecipeScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16.0),
+                ImageDisplayWidget(),
+                CustomTextField(
+                  controller: recipeProvider.thumbnailUrlController,
+                  onChanged: (value) => recipeProvider.updateImageController(),
+                  hintText: 'Thumbnail URL',
+                ),
                 CustomTextField(
                   controller: recipeProvider.nameController,
                   hintText: 'Recipe Name',
@@ -56,16 +63,14 @@ class AddOwnRecipeScreen extends StatelessWidget {
                   maxLines: 5,
                 ),
                 CustomTextField(
-                  controller: recipeProvider.thumbnailUrlController,
-                  hintText: 'Thumbnail URL',
-                ),
-                CustomTextField(
                   controller: recipeProvider.youtubeUrlController,
                   hintText: 'YouTube URL',
                 ),
                 const SizedBox(height: 16.0),
-                const Text('Ingredients and Measurements',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(
+                  'Ingredients and Measurements',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
