@@ -323,6 +323,34 @@ class RecipeProvider with ChangeNotifier {
     }
   }
 
+  // Delete a recipe by ID
+  Future<void> deleteRecipe(String id, BuildContext context) async {
+    try {
+      _recipes.removeWhere((recipe) => recipe.id == id);
+      await _recipeBox.delete(id);
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+      notifyListeners();
+    } catch (e) {
+      developer.log('Error deleting recipe: $e');
+    }
+  }
+
+  // Edit a recipe by ID
+  Future<void> editRecipe(String id, RecipeModel updatedRecipe) async {
+    try {
+      final recipeIndex = _recipes.indexWhere((recipe) => recipe.id == id);
+      if (recipeIndex != -1) {
+        _recipes[recipeIndex] = updatedRecipe;
+        await _recipeBox.put(id, updatedRecipe);
+        notifyListeners();
+      }
+    } catch (e) {
+      developer.log('Error editing recipe: $e');
+    }
+  }
+
   // Clear all controllers when recipe is saved
   void clearFields() {
     nameController.clear();

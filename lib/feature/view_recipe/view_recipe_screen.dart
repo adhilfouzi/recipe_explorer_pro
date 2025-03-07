@@ -38,9 +38,7 @@ class ViewRecipeScreen extends StatelessWidget {
                       const SizedBox(height: 15),
                       InstructionsSection(instructions: recipe.instructions),
                       const SizedBox(height: 15),
-                      RecipeButtons(
-                          sourceUrl: recipe.source ?? '',
-                          youtubeUrl: recipe.youtubeUrl),
+                      RecipeButtons(recipe: recipe),
                       const SizedBox(height: 20),
                     ],
                   ),
