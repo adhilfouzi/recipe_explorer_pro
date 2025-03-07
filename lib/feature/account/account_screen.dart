@@ -4,12 +4,9 @@ import 'package:provider/provider.dart';
 import '../../../providers/theme_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../utils/constants/images.dart';
+import '../../utils/routes/app_routes.dart';
 import '../../utils/theme/theme_container.dart';
 import 'widget/version_screen.dart';
-import '../app_theme/app_theme_screen.dart';
-import '../favorite/favorite_screen.dart';
-import '../my_recipe/my_recipe_screen.dart';
-import '../profile/profile_screen.dart';
 import 'widget/settings_options.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -57,18 +54,14 @@ class AccountScreen extends StatelessWidget {
                   title: "Profile",
                   icon: Icons.person,
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ProfileScreen()),
-                    );
+                    Navigator.pushNamed(context, AppRoutes.profile);
                   },
                 ),
                 SettingsOption(
                   title: "App Theme",
                   icon: Icons.dark_mode,
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => AppThemeScreen()),
-                    );
+                    Navigator.pushNamed(context, AppRoutes.themeScreen);
                   },
                   trailing: Switch(
                     activeColor: Colors.amberAccent,
@@ -80,18 +73,14 @@ class AccountScreen extends StatelessWidget {
                   title: "My Recipe",
                   icon: Icons.book,
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => MyRecipeScreen()),
-                    );
+                    Navigator.pushNamed(context, AppRoutes.myRecipe);
                   },
                 ),
                 SettingsOption(
                   title: "Favorite Recipe",
                   icon: Icons.favorite,
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => FavoriteScreen()),
-                    );
+                    Navigator.pushNamed(context, AppRoutes.favorites);
                   },
                 ),
                 Expanded(child: VersionScreen()),

@@ -7,10 +7,9 @@ import 'package:provider/provider.dart';
 import '../data/models/user_model.dart';
 import '../data/services/auth_service.dart';
 import '../data/services/user_service.dart';
-import '../feature/auth/login_screen.dart';
-import '../feature/home/home_screen.dart';
 import '../utils/constants/images.dart';
 import '../utils/constants/snackbar.dart';
+import '../utils/routes/app_routes.dart';
 import 'user_provider.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -35,46 +34,33 @@ class AuthProvider with ChangeNotifier {
       var user = await AuthService().signInWithEmailAndPassword(
           emailTextEditingController.text.trim(),
           passwordTextEditingController.text.trim());
-      emailTextEditingController.clear();
-      passwordTextEditingController.clear();
-      if (context.mounted) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
-        MySnackbar.showSuccess(context, "Welcome to play world");
-      }
-      await userPro.addUser(user);
-    } catch (e) {
-      log("SigninError $e");
-    }
-  }
-
-  Future<void> googleSignIn(BuildContext context) async {
-    final userPro = Provider.of<UserProvider>(context, listen: false);
-    try {
-      var user = await AuthService().signInWithGoogle();
 
       if (user.email == '') {
         if (context.mounted) {
-          MySnackbar.showError(context, "No User Found, Sign Up First");
+          MySnackbar.showError(context, "please verify your email");
         }
         return;
       }
 
-      await userPro.addUser(user);
       if (context.mounted) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
-        MySnackbar.showSuccess(context, "Welcome to play world");
+        Navigator.pushNamed(context, AppRoutes.home);
       }
-    } catch (e) {
-      log("SigninError $e");
+      await userPro.addUser(user);
+    } catch (e, s) {
+      if (context.mounted) {
+        MySnackbar.showError(context, "Invalid email or password");
+      }
+      log("SigninError $e :- $s");
+    } finally {
+      emailTextEditingController.clear();
+      passwordTextEditingController.clear();
+      notifyListeners();
     }
   }
 
   final fullNameText = TextEditingController();
   final phoneNumberText = TextEditingController();
   final emailText = TextEditingController();
-  final dobText = TextEditingController();
   final passwordText = TextEditingController();
   bool _isChecked = false;
 
@@ -114,14 +100,12 @@ class AuthProvider with ChangeNotifier {
       await userPro.addUser(user);
 
       if (context.mounted) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.pushNamed(context, AppRoutes.home);
       }
 
       fullNameText.clear();
       phoneNumberText.clear();
       emailText.clear();
-      dobText.clear();
       passwordText.clear();
       isChecked = false;
       signupFormKey.currentState!.reset();
@@ -135,11 +119,28 @@ class AuthProvider with ChangeNotifier {
 
     _auth.signOut();
     _user = null;
+
     if (context.mounted) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.pushNamedAndRemoveUntil(
+          context, AppRoutes.login, (route) => false);
     }
     await userPro.logoutUser();
     notifyListeners();
+  }
+
+  void requestEmailVerification(BuildContext context) async {
+    try {
+      String email = emailTextEditingController.text.trim();
+      await AuthService().sendPasswordResetEmail(email);
+      if (context.mounted) {
+        Navigator.pushNamed(context, AppRoutes.password);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        log("Error request EmailVerification: $e");
+        MySnackbar.showError(context, "Try again later");
+      }
+    }
   }
 }

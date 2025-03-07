@@ -5,8 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/images.dart';
-import '../home/home_screen.dart';
-import 'login_screen.dart';
+import '../../utils/routes/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -52,17 +51,15 @@ class _SplashScreenState extends State<SplashScreen> {
       log("User is not logged in");
       await Future.delayed(const Duration(seconds: 2));
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, AppRoutes.login, (route) => false);
       }
     } else {
       log("User is logged in", error: "User is logged in");
       await Future.delayed(const Duration(seconds: 2));
       if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, AppRoutes.home, (route) => false);
       }
     }
   }

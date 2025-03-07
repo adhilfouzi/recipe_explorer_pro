@@ -6,12 +6,13 @@ import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_explorer_pro/data/models/hive_registrar.g.dart';
-import 'feature/auth/splash_screen.dart';
 import 'data/handle/firebase_options.dart';
+import 'feature/notfoundscreen.dart';
 import 'providers/auth_provider.dart';
 import 'providers/recipe_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/user_provider.dart';
+import 'utils/routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,7 +53,12 @@ class MyApp extends StatelessWidget {
           title: 'Chef Brand',
           debugShowCheckedModeBanner: false,
           theme: themeProvider.currentTheme,
-          home: SplashScreen(),
+          initialRoute: AppRoutes.splash,
+          routes: AppRoutes.routes,
+          onGenerateRoute: AppRoutes.onGenerateRoute,
+          onUnknownRoute: (settings) => MaterialPageRoute(
+            builder: (context) => NotFoundScreen(routeName: settings.name),
+          ),
         );
       },
     );

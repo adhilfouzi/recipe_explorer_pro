@@ -45,7 +45,7 @@ class CategoriesHead extends StatelessWidget {
               child: IconButton(
                 icon: Icon(Icons.arrow_back,
                     color: isDarkMode ? Colors.white : Colors.black),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Navigator.pop(context),
               ),
             ),
           ),

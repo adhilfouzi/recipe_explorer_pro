@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import '../data/models/category_model.dart';
 import '../data/models/recipe_model.dart';
+import '../utils/constants/snackbar.dart';
 import '../utils/http/common_site.dart';
 import '../utils/http/http_service.dart';
 
@@ -47,8 +48,8 @@ class RecipeProvider with ChangeNotifier {
     notifyListeners();
     _recipeBox = await Hive.openBox<RecipeModel>('recipes');
     _categoryBox = await Hive.openBox<CategoryModel>('categories');
-    await fetchAll();
     isLoading = false;
+    await fetchAll();
     notifyListeners();
   }
 
@@ -58,7 +59,7 @@ class RecipeProvider with ChangeNotifier {
     } else {
       _category = _categoryBox.values.toList();
       _recipes.addAll(_recipeBox.values);
-      await fetchRecipesCategories();
+      if (_recipeBox.length < 250) await fetchRecipesCategories();
       _selectTrendingRecipes();
     }
     notifyListeners();
@@ -199,6 +200,7 @@ class RecipeProvider with ChangeNotifier {
         measurements: _recipes[recipeIndex].measurements,
         source: _recipes[recipeIndex].source,
         isFavorite: !_recipes[recipeIndex].isFavorite,
+        isItMine: _recipes[recipeIndex].isItMine,
       );
       _recipeBox.put(id, _recipes[recipeIndex]);
       if (_recipes[recipeIndex].isFavorite) {
@@ -243,6 +245,11 @@ class RecipeProvider with ChangeNotifier {
   final TextEditingController instructionsController = TextEditingController();
   final TextEditingController thumbnailUrlController = TextEditingController();
   final TextEditingController youtubeUrlController = TextEditingController();
+  TextEditingController get imageController => thumbnailUrlController;
+
+  void updateImageController() {
+    notifyListeners();
+  }
 
   Future<void> addRecipe(BuildContext context) async {
     try {
@@ -253,10 +260,9 @@ class RecipeProvider with ChangeNotifier {
           thumbnailUrlController.text.isEmpty ||
           ingredientControllers.any((controller) => controller.text.isEmpty) ||
           measurementControllers.any((controller) => controller.text.isEmpty)) {
-        developer.log('Please fill all the fields');
+        MySnackbar.showError(context, 'Please fill all the fields');
         return;
       }
-      developer.log(' fill all the fields');
       var recipe = RecipeModel(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
           name: nameController.text,
@@ -299,10 +305,6 @@ class RecipeProvider with ChangeNotifier {
       _measurementControllers;
   int get ingredientsCount => _ingredientControllers.length;
 
-  // RecipeProvider() {
-  //   addIngredient(); // Start with one default ingredient field
-  // }
-
   // Add a new ingredient and measurement field
   void addIngredient() {
     ingredientControllers.add(TextEditingController());
@@ -318,6 +320,34 @@ class RecipeProvider with ChangeNotifier {
       ingredientControllers.removeAt(index);
       measurementControllers.removeAt(index);
       notifyListeners();
+    }
+  }
+
+  // Delete a recipe by ID
+  Future<void> deleteRecipe(String id, BuildContext context) async {
+    try {
+      _recipes.removeWhere((recipe) => recipe.id == id);
+      await _recipeBox.delete(id);
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+      notifyListeners();
+    } catch (e) {
+      developer.log('Error deleting recipe: $e');
+    }
+  }
+
+  // Edit a recipe by ID
+  Future<void> editRecipe(String id, RecipeModel updatedRecipe) async {
+    try {
+      final recipeIndex = _recipes.indexWhere((recipe) => recipe.id == id);
+      if (recipeIndex != -1) {
+        _recipes[recipeIndex] = updatedRecipe;
+        await _recipeBox.put(id, updatedRecipe);
+        notifyListeners();
+      }
+    } catch (e) {
+      developer.log('Error editing recipe: $e');
     }
   }
 

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_explorer_pro/utils/routes/app_routes.dart';
 import '../../providers/recipe_provider.dart';
 import '../../utils/constants/images.dart';
 import '../../utils/constants/shimmer.dart';
 import '../../utils/theme/theme_container.dart';
-import '../account/account_screen.dart';
 import 'widget/category_item.dart';
 import 'widget/recipe_item.dart';
 import 'widget/searchbar_widget.dart';
@@ -53,11 +53,8 @@ class HomeScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => AccountScreen(),
-                                      ),
-                                    );
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.account);
                                   },
                                   child: SizedBox(
                                     width: 40,
@@ -100,10 +97,9 @@ class HomeScreen extends StatelessWidget {
                                   },
                                 ),
                               ),
-                            const SizedBox(height: 16),
 
-                            // Trending Section
-                            if (trending.isNotEmpty)
+                            if (trending.isNotEmpty) ...[
+                              // Trending Section
                               Text(
                                 "Trending",
                                 style: GoogleFonts.lato(
@@ -112,10 +108,9 @@ class HomeScreen extends StatelessWidget {
                                   color: theme.textTheme.bodyLarge!.color,
                                 ),
                               ),
-                            const SizedBox(height: 12),
+                              const SizedBox(height: 12),
 
-                            // Trending List
-                            if (trending.isNotEmpty)
+                              // Trending List
                               SizedBox(
                                 height: 180,
                                 child: ListView.builder(
@@ -127,7 +122,8 @@ class HomeScreen extends StatelessWidget {
                                   },
                                 ),
                               ),
-                            const SizedBox(height: 16),
+                              const SizedBox(height: 16),
+                            ],
                           ],
 
                           // Recipe List (Filtered by Search)

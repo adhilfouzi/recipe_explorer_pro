@@ -15,10 +15,7 @@ class VersionScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(height: height * 0.01),
-        Image.asset(
-          Images.logo,
-          width: height * 0.3,
-        ),
+        Image.asset(Images.logo, width: height * 0.2),
         SizedBox(height: height * 0.01),
         FutureBuilder<PackageInfo>(
           future: PackageInfo.fromPlatform(),

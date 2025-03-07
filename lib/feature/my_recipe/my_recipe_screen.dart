@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/recipe_provider.dart';
+import '../../utils/routes/app_routes.dart';
 import '../../utils/theme/theme_container.dart';
 import '../favorite/widget/empty_search.dart';
 import '../home/widget/recipe_item.dart';
-import 'add_own_recipe_screen.dart';
 
 class MyRecipeScreen extends StatelessWidget {
   const MyRecipeScreen({super.key});
@@ -38,12 +38,9 @@ class MyRecipeScreen extends StatelessWidget {
                   ),
                   Spacer(),
                   IconButton(
-                    icon: const Icon(Icons.add_box_outlined, size: 28),
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddOwnRecipeScreen())),
-                  ),
+                      icon: const Icon(Icons.add_box_outlined, size: 28),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, AppRoutes.addRecipe)),
                 ],
               ),
               //Search MY recipe
